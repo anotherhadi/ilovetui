@@ -1,0 +1,19 @@
+# ilovetui default theme
+# Copy to ~/.config/ilovetui/config.yaml and edit to customize.
+colors:
+  base00: "#1e1e2e" # Background
+  base01: "#181825" # Lighter Background / Status Bars
+  base02: "#313244" # Selection Background
+  base03: "#45475a" # Comments / Invisibles
+  base04: "#585b70" # Dark Foreground / Status Bars
+  base05: "#cdd6f4" # Default Foreground
+  base06: "#f5f5f5" # Light Foreground
+  base07: "#b4befe" # Light Background
+  base08: "#f38ba8" # Variables / Errors / Diff Deleted
+  base09: "#fab387" # Integers / Constants / Booleans
+  base0a: "#f9e2af" # Classes / Warnings / Search Background
+  base0b: "#a6e3a1" # Strings / Success / Diff Inserted
+  base0c: "#94e2d5" # Support / Regex / Escape Characters
+  base0d: "#89b4fa" # Functions / Methods / Headings / Accent
+  base0e: "#cba6f7" # Keywords / Storage / Diff Changed
+  base0f: "#f2cdcd" # Embedded / Misc
