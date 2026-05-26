@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"charm.land/bubbles/v2/help"
+	"charm.land/bubbles/v2/paginator"
 	"charm.land/bubbles/v2/textarea"
 	"charm.land/bubbles/v2/viewport"
 	"charm.land/lipgloss/v2"
@@ -45,6 +46,25 @@ func NewTextarea(showLineNumbers bool) textarea.Model {
 	ts.Blurred.EndOfBuffer = lipgloss.NewStyle().Foreground(S.SubtleBg)
 	ta.SetStyles(ts)
 	return ta
+}
+
+// NewPaginator returns a dot-style paginator.Model styled with the active theme.
+func NewPaginator() paginator.Model {
+	p := paginator.New()
+	p.Type = paginator.Dots
+	p.ActiveDot = S.PagerDotActive
+	p.InactiveDot = S.PagerDotInactive
+	return p
+}
+
+// SplitH splits totalHeight into top and bottom sections, accounting for the
+// height of statusBar (measured by newline count).
+func SplitH(totalHeight int, statusBar string, ratio float64) (top, bottom int) {
+	statusH := strings.Count(statusBar, "\n") + 1
+	available := totalHeight - statusH
+	top = int(float64(available) * ratio)
+	bottom = available - top
+	return
 }
 
 // NewViewport returns a viewport.Model with mouse wheel disabled.

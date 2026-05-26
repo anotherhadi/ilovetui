@@ -47,6 +47,10 @@ type Styles struct {
 	// Pre-built panel styles (rounded border)
 	Panel        lipgloss.Style
 	PanelFocused lipgloss.Style
+
+	// Pre-rendered pager dot strings
+	PagerDotActive   string
+	PagerDotInactive string
 }
 
 func newStyles(c colorsYAML) Styles {
@@ -102,5 +106,8 @@ func newStyles(c colorsYAML) Styles {
 		PanelFocused: lipgloss.NewStyle().
 			Border(lipgloss.RoundedBorder()).
 			BorderForeground(b0D),
+
+		PagerDotActive:   lipgloss.NewStyle().Foreground(b0D).SetString("•").String(),
+		PagerDotInactive: lipgloss.NewStyle().Foreground(b03).SetString("•").String(),
 	}
 }
