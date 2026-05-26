@@ -1,0 +1,76 @@
+package ilovetui
+
+import (
+	"strings"
+
+	"charm.land/bubbles/v2/help"
+	"charm.land/bubbles/v2/textarea"
+	"charm.land/bubbles/v2/viewport"
+	"charm.land/lipgloss/v2"
+)
+
+// NewHelp returns a help.Model styled with the active theme.
+func NewHelp() help.Model {
+	h := help.New()
+	h.Styles.ShortKey = lipgloss.NewStyle().Foreground(S.Primary)
+	h.Styles.ShortDesc = lipgloss.NewStyle().Foreground(S.Muted)
+	h.Styles.ShortSeparator = lipgloss.NewStyle().Foreground(S.Subtle)
+	h.Styles.FullKey = lipgloss.NewStyle().Foreground(S.Primary)
+	h.Styles.FullDesc = lipgloss.NewStyle().Foreground(S.Muted)
+	h.Styles.FullSeparator = lipgloss.NewStyle().Foreground(S.Subtle)
+	h.Styles.Ellipsis = lipgloss.NewStyle().Foreground(S.Subtle)
+	return h
+}
+
+// NewTextarea returns a textarea.Model styled with the active theme.
+// Set showLineNumbers to true to display line numbers in the gutter.
+func NewTextarea(showLineNumbers bool) textarea.Model {
+	ta := textarea.New()
+	ta.Prompt = ""
+	ta.ShowLineNumbers = showLineNumbers
+	ta.CharLimit = 0
+	ta.EndOfBufferCharacter = '~'
+	ts := ta.Styles()
+	ts.Focused.Base = lipgloss.NewStyle()
+	ts.Blurred.Base = lipgloss.NewStyle()
+	ts.Focused.Text = lipgloss.NewStyle().Foreground(S.Text)
+	ts.Focused.CursorLine = lipgloss.NewStyle().Background(S.Selection).Foreground(S.Text)
+	ts.Focused.CursorLineNumber = lipgloss.NewStyle().Background(S.Selection).Foreground(S.Primary).Bold(true)
+	ts.Focused.LineNumber = lipgloss.NewStyle().Foreground(S.Subtle)
+	ts.Focused.Placeholder = lipgloss.NewStyle().Foreground(S.Subtle)
+	ts.Focused.EndOfBuffer = lipgloss.NewStyle().Foreground(S.SubtleBg)
+	ts.Blurred.Text = lipgloss.NewStyle().Foreground(S.Muted)
+	ts.Blurred.LineNumber = lipgloss.NewStyle().Foreground(S.SubtleBg)
+	ts.Blurred.Placeholder = lipgloss.NewStyle().Foreground(S.Subtle)
+	ts.Blurred.EndOfBuffer = lipgloss.NewStyle().Foreground(S.SubtleBg)
+	ta.SetStyles(ts)
+	return ta
+}
+
+// NewViewport returns a viewport.Model with mouse wheel disabled.
+func NewViewport() viewport.Model {
+	vp := viewport.New()
+	vp.MouseWheelEnabled = false
+	return vp
+}
+
+// ViewportView renders the viewport and appends a subtle scroll indicator
+// on the last visible line when the user has not reached the bottom.
+func ViewportView(vp *viewport.Model) string {
+	v := vp.View()
+	if vp.AtBottom() {
+		return v
+	}
+	lines := strings.Split(v, "\n")
+	if len(lines) == 0 {
+		return v
+	}
+	arrow := lipgloss.NewStyle().Foreground(S.Subtle).Render("↓")
+	arrowW := lipgloss.Width(arrow)
+	inner := vp.Width() - 2*arrowW
+	if inner < 0 {
+		inner = 0
+	}
+	lines[len(lines)-1] = arrow + strings.Repeat(" ", inner) + arrow
+	return strings.Join(lines, "\n")
+}
