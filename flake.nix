@@ -1,5 +1,5 @@
 {
-  description = "";
+  description = "A minimal Go library that provides a shared Base16color theme for terminal UIs built with bubbletea and lipgloss.";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
