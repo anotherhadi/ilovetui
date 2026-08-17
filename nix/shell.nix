@@ -15,6 +15,7 @@ in
       [
         go
         doctoc
+        (python3.withPackages (ps: [ps.pyte]))
       ]
       ++ hooks.enabledPackages;
 

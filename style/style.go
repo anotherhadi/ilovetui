@@ -1,4 +1,4 @@
-package ilovetui
+package style
 
 import (
 	"image/color"
@@ -44,7 +44,11 @@ type Styles struct {
 	Bold  lipgloss.Style
 	Faint lipgloss.Style
 
-	// Pre-built panel styles (rounded border)
+	// User preferences, read from config
+	NerdFonts  bool
+	BorderType lipgloss.Border
+
+	// Pre-built panel styles, bordered with BorderType
 	Panel        lipgloss.Style
 	PanelFocused lipgloss.Style
 
@@ -53,7 +57,7 @@ type Styles struct {
 	PagerDotInactive string
 }
 
-func newStyles(c colorsYAML) Styles {
+func newStyles(c colorsYAML, nerdFonts bool, borderName string) Styles {
 	lc := func(s string) color.Color {
 		s = strings.TrimSpace(s)
 		if s != "" && s[0] != '#' {
@@ -79,6 +83,8 @@ func newStyles(c colorsYAML) Styles {
 	b0E := lc(c.Base0E)
 	b0F := lc(c.Base0F)
 
+	borderType := resolveBorderType(borderName)
+
 	return Styles{
 		Base00: b00, Base01: b01, Base02: b02, Base03: b03,
 		Base04: b04, Base05: b05, Base06: b06, Base07: b07,
@@ -99,12 +105,15 @@ func newStyles(c colorsYAML) Styles {
 		Bold:  lipgloss.NewStyle().Bold(true),
 		Faint: lipgloss.NewStyle().Foreground(b03).Faint(true),
 
+		NerdFonts:  nerdFonts,
+		BorderType: borderType,
+
 		Panel: lipgloss.NewStyle().
-			Border(lipgloss.RoundedBorder()).
+			Border(borderType).
 			BorderForeground(b03),
 
 		PanelFocused: lipgloss.NewStyle().
-			Border(lipgloss.RoundedBorder()).
+			Border(borderType).
 			BorderForeground(b0D),
 
 		PagerDotActive:   lipgloss.NewStyle().Foreground(b0D).SetString("•").String(),

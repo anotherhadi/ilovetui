@@ -1,4 +1,4 @@
-package ilovetui
+package style
 
 import (
 	"fmt"
