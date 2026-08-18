@@ -1,5 +1,14 @@
-# ilovetui default theme
+# ilovetui default config
 # Copy to ~/.config/ilovetui/config.yaml and edit to customize.
+
+# Whether components may use Nerd Font glyphs (requires a patched font).
+# Leave false for maximum terminal/font compatibility.
+nerd_fonts: false
+
+# Border style used by panels across all ilovetui-based TUIs.
+# One of: rounded, normal, thick, double, hidden, ascii.
+border: rounded
+
 colors:
   base00: "#110F12" # Background
   base01: "#1C1920" # Lighter Background / Status Bars

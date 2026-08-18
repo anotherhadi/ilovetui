@@ -1,4 +1,4 @@
-package ilovetui
+package style
 
 import (
 	"fmt"
@@ -13,7 +13,6 @@ func hexColor(c color.Color) *string {
 	return &s
 }
 
-// GlamourStyleConfig returns a glamour ansi.StyleConfig using the active theme.
 func GlamourStyleConfig() ansi.StyleConfig {
 	str := func(s string) *string { return &s }
 	boolPtr := func(b bool) *bool { return &b }

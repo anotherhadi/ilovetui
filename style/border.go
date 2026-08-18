@@ -1,4 +1,4 @@
-package ilovetui
+package style
 
 import (
 	"strings"
@@ -6,7 +6,22 @@ import (
 	"charm.land/lipgloss/v2"
 )
 
-// ContentHeight returns the usable inner height for a bordered panel of totalH rows.
+var borderTypes = map[string]lipgloss.Border{
+	"rounded": lipgloss.RoundedBorder(),
+	"normal":  lipgloss.NormalBorder(),
+	"thick":   lipgloss.ThickBorder(),
+	"double":  lipgloss.DoubleBorder(),
+	"hidden":  lipgloss.HiddenBorder(),
+	"ascii":   lipgloss.ASCIIBorder(),
+}
+
+func resolveBorderType(name string) lipgloss.Border {
+	if b, ok := borderTypes[strings.ToLower(strings.TrimSpace(name))]; ok {
+		return b
+	}
+	return lipgloss.RoundedBorder()
+}
+
 func ContentHeight(totalH int) int {
 	h := totalH - 2
 	if h < 0 {
@@ -15,12 +30,6 @@ func ContentHeight(totalH int) int {
 	return h
 }
 
-// RenderWithTitle renders a bordered box with a title embedded in the top border.
-// title may contain ANSI color codes. width and height are the total outer dimensions.
-//
-// Example:
-//
-//	box := ilovetui.RenderWithTitle(theme.Styles.PanelFocused, "Header", content, w, h)
 func RenderWithTitle(border lipgloss.Style, title, content string, width, height int) string {
 	boxH := height - 1
 	if contentH := boxH - 1; contentH > 0 {
@@ -33,12 +42,16 @@ func RenderWithTitle(border lipgloss.Style, title, content string, width, height
 
 	boxWidth := lipgloss.Width(strings.SplitN(box, "\n", 2)[0])
 	titleW := lipgloss.Width(title)
-	fillW := boxWidth - titleW - 4 // 4 = "╭ " + " " + "╮"
+
+	b, _, _, _, _ := border.GetBorder()
+	topLeft, top, topRight := b.TopLeft, b.Top, b.TopRight
+
+	fillW := boxWidth - titleW - lipgloss.Width(topLeft) - lipgloss.Width(topRight) - 2
 	if fillW < 0 {
 		fillW = 0
 	}
 	bc := lipgloss.NewStyle().Foreground(border.GetBorderTopForeground())
-	topLine := bc.Render("╭ ") + bc.Render(title) + bc.Render(" "+strings.Repeat("─", fillW)+"╮")
+	topLine := bc.Render(topLeft+" ") + bc.Render(title) + bc.Render(" "+strings.Repeat(top, fillW)+topRight)
 
 	return lipgloss.JoinVertical(lipgloss.Left, topLine, box)
 }

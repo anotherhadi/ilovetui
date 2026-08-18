@@ -1,4 +1,4 @@
-package ilovetui
+package style
 
 import (
 	"image/color"
@@ -7,10 +7,7 @@ import (
 	"charm.land/lipgloss/v2"
 )
 
-// Styles holds both the raw Base16 palette and ready-to-use semantic colors
-// and lipgloss styles. Access via the package-level variable S.
 type Styles struct {
-	// Raw Base16 palette
 	Base00 color.Color
 	Base01 color.Color
 	Base02 color.Color
@@ -28,7 +25,6 @@ type Styles struct {
 	Base0E color.Color
 	Base0F color.Color
 
-	// Semantic color aliases
 	Background color.Color
 	SubtleBg   color.Color
 	Selection  color.Color
@@ -40,20 +36,20 @@ type Styles struct {
 	Warning    color.Color
 	Error      color.Color
 
-	// Pre-built text styles
 	Bold  lipgloss.Style
 	Faint lipgloss.Style
 
-	// Pre-built panel styles (rounded border)
+	NerdFonts  bool
+	BorderType lipgloss.Border
+
 	Panel        lipgloss.Style
 	PanelFocused lipgloss.Style
 
-	// Pre-rendered pager dot strings
 	PagerDotActive   string
 	PagerDotInactive string
 }
 
-func newStyles(c colorsYAML) Styles {
+func newStyles(c colorsYAML, nerdFonts bool, borderName string) Styles {
 	lc := func(s string) color.Color {
 		s = strings.TrimSpace(s)
 		if s != "" && s[0] != '#' {
@@ -79,6 +75,8 @@ func newStyles(c colorsYAML) Styles {
 	b0E := lc(c.Base0E)
 	b0F := lc(c.Base0F)
 
+	borderType := resolveBorderType(borderName)
+
 	return Styles{
 		Base00: b00, Base01: b01, Base02: b02, Base03: b03,
 		Base04: b04, Base05: b05, Base06: b06, Base07: b07,
@@ -99,12 +97,15 @@ func newStyles(c colorsYAML) Styles {
 		Bold:  lipgloss.NewStyle().Bold(true),
 		Faint: lipgloss.NewStyle().Foreground(b03).Faint(true),
 
+		NerdFonts:  nerdFonts,
+		BorderType: borderType,
+
 		Panel: lipgloss.NewStyle().
-			Border(lipgloss.RoundedBorder()).
+			Border(borderType).
 			BorderForeground(b03),
 
 		PanelFocused: lipgloss.NewStyle().
-			Border(lipgloss.RoundedBorder()).
+			Border(borderType).
 			BorderForeground(b0D),
 
 		PagerDotActive:   lipgloss.NewStyle().Foreground(b0D).SetString("•").String(),

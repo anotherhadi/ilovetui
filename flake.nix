@@ -1,5 +1,5 @@
 {
-  description = "";
+  description = "A shared Base16 theme, a themed wrapper around every official component, and a small set of custom Bubble Tea components, in one Go module, so every TUI built with it shares one config file and looks consistent.";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
