@@ -11,10 +11,36 @@ import (
 	"github.com/anotherhadi/ilovetui/style"
 )
 
-const confirmID = "confirm"
+// confirmedMsg is what the confirmation modal reports back with. The app
+// listens for it like any other message - it never holds a reference to the
+// modal, and the modal never knows what confirming means.
+type confirmedMsg struct{}
+
+// confirm is the modal's content: a model, so it owns its own keys. The host
+// no longer has to ask which modal is on top to know where "y" should go.
+type confirm struct{}
+
+func (c confirm) Init() tea.Cmd { return nil }
+
+func (c confirm) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	if k, ok := msg.(tea.KeyPressMsg); ok && k.String() == "y" {
+		// Report back and close itself: Close() is a package-level command,
+		// so the content needs no reference to the modal.Model either.
+		return c, tea.Batch(
+			func() tea.Msg { return confirmedMsg{} },
+			modal.Close(),
+		)
+	}
+	return c, nil
+}
+
+func (c confirm) View() tea.View {
+	return tea.NewView("This can't be undone.\n\ny: confirm  esc: cancel")
+}
 
 type model struct {
 	m             modal.Model
+	deleted       bool
 	width, height int
 }
 
@@ -30,28 +56,26 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.width, m.height = msg.Width, msg.Height
 		return m, nil
 
+	case confirmedMsg:
+		m.deleted = true
+		return m, nil
+
 	case tea.KeyPressMsg:
 		switch msg.String() {
 		case "ctrl+c", "q":
 			return m, tea.Quit
 
 		case "m":
-			return m, modal.Show("Delete file?", "This can't be undone.\n\ny: confirm  esc: cancel",
-				modal.WithID(confirmID))
+			return m, modal.Show("Delete file?", confirm{})
 
 		case "n":
 			if m.m.Open() {
-				return m, modal.Show("Really sure?", "There's no undo for this one either.")
+				return m, modal.Show("Really sure?", modal.Text("There's no undo for this one either."))
 			}
 
 		case "esc":
 			if m.m.Open() {
 				return m, modal.Close()
-			}
-
-		case "y":
-			if m.m.TopID() == confirmID {
-				return m, modal.Dismiss(confirmID)
 			}
 		}
 	}
@@ -63,8 +87,11 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m model) View() tea.View {
 	title := lipgloss.NewStyle().Bold(true).Foreground(style.S.Primary).Render("My App")
-	body := lipgloss.NewStyle().Foreground(style.S.Text).Render(
-		"Some regular content, styled with theme colors,\nso you can see it turn flat gray behind the modal.")
+	text := "Some regular content, styled with theme colors,\nso you can see it turn flat gray behind the modal."
+	if m.deleted {
+		text = "File deleted - the modal's content reported back\nwith its own message, and closed itself."
+	}
+	body := lipgloss.NewStyle().Foreground(style.S.Text).Render(text)
 	help := lipgloss.NewStyle().Foreground(style.S.Subtle).Render(
 		"m: open modal  n: open nested modal  y: confirm  esc: cancel  q: quit")
 

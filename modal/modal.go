@@ -4,16 +4,17 @@
 // up rendering it.
 //
 // It composites over an already-rendered string (see Model.Render), so it
-// has no dependency on github.com/anotherhadi/ilovetui/layout: the same
-// Model works whether the host uses layout for its main content or not (see
+// makes no assumption at all about how the host builds that string: the same
+// Model works whatever the host uses to lay out its main content (see
 // Model.Render and Model.View).
+//
+// A modal's content is a model, not a string: it is updated while it's on
+// top of the stack, so it can hold anything a pane can - a form, a list, a
+// confirmation reporting its answer back with its own tea.Msg. See Show and
+// Text.
 package modal
 
-import (
-	"fmt"
-
-	tea "charm.land/bubbletea/v2"
-)
+import tea "charm.land/bubbletea/v2"
 
 // Model holds the currently open modals (a stack: the most recently shown
 // is drawn on top, everything beneath it - the background and any earlier
@@ -21,7 +22,6 @@ import (
 // they share. Build one with New.
 type Model struct {
 	modals    []Modal
-	nextID    int
 	maxWidth  int
 	maxHeight int
 	styles    Styles
@@ -68,11 +68,28 @@ func (m Model) Init() tea.Cmd { return nil }
 func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case ShowMsg:
-		return m.show(msg.Modal), nil
+		return m.show(msg.Modal)
 	case DismissMsg:
-		return m.remove(msg.ID), nil
+		return m.pop(), nil
 	}
-	return m, nil
+	return m.updateTop(msg)
+}
+
+// updateTop forwards msg to the topmost modal's content - the only one the
+// user can interact with, everything beneath it being dimmed (see Render). A
+// modal deeper in the stack is frozen until the ones above it close.
+//
+// This is what lets modal content be a real model: it gets the key presses,
+// the ticks and the results of its own commands, and can report back to the
+// rest of the program with a tea.Msg of its own.
+func (m Model) updateTop(msg tea.Msg) (Model, tea.Cmd) {
+	i := len(m.modals) - 1
+	if i < 0 || m.modals[i].Content == nil {
+		return m, nil
+	}
+	var cmd tea.Cmd
+	m.modals[i].Content, cmd = m.modals[i].Content.Update(msg)
+	return m, cmd
 }
 
 // Open reports whether at least one modal is currently shown - handy for a
@@ -80,46 +97,26 @@ func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 // enter to confirm) instead of its normal UI while one is open.
 func (m Model) Open() bool { return len(m.modals) > 0 }
 
-// TopID returns the ID of the topmost (currently interactive) modal, or ""
-// if none is open.
-func (m Model) TopID() string {
-	if len(m.modals) == 0 {
-		return ""
-	}
-	return m.modals[len(m.modals)-1].ID
-}
-
-// show pushes or replaces (see WithID) a modal on top of the stack.
-func (m Model) show(mo Modal) Model {
-	if mo.ID == "" {
-		mo.ID = fmt.Sprintf("modal-%d", m.nextID)
-		m.nextID++
-	}
-	for i, existing := range m.modals {
-		if existing.ID == mo.ID {
-			m.modals[i] = mo
-			return m
-		}
-	}
+// show pushes a modal on top of the stack and returns its content's Init - a
+// modal's body starts the same way any other model does.
+func (m Model) show(mo Modal) (Model, tea.Cmd) {
 	m.modals = append(m.modals, mo)
-	return m
+	return m, initContent(mo)
 }
 
-// remove closes the modal identified by id, or the topmost one if id is
-// empty (see Close).
-func (m Model) remove(id string) Model {
+// initContent is mo's content's Init, or nil for a modal without content.
+func initContent(mo Modal) tea.Cmd {
+	if mo.Content == nil {
+		return nil
+	}
+	return mo.Content.Init()
+}
+
+// pop closes the topmost modal (see Close).
+func (m Model) pop() Model {
 	if len(m.modals) == 0 {
 		return m
 	}
-	if id == "" {
-		m.modals = m.modals[:len(m.modals)-1]
-		return m
-	}
-	for i, mo := range m.modals {
-		if mo.ID == id {
-			m.modals = append(m.modals[:i], m.modals[i+1:]...)
-			break
-		}
-	}
+	m.modals = m.modals[:len(m.modals)-1]
 	return m
 }

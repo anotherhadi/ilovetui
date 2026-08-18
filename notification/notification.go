@@ -3,8 +3,8 @@
 // rather than a direct reference to the Model that ends up rendering them.
 //
 // It composites over an already-rendered string (see Model.Render), so it
-// has no dependency on github.com/anotherhadi/ilovetui/layout: the same
-// Model works whether the host uses layout for its main content or not (see
+// makes no assumption at all about how the host builds that string: the same
+// Model works whatever the host uses to lay out its main content (see
 // Model.Render and Model.View).
 package notification
 

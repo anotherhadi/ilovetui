@@ -8,7 +8,7 @@ The idea is simple: instead of every TUI app managing its own colors, they all s
 
 - `github.com/anotherhadi/ilovetui/style` — the theme itself: colors, pre-built panel styles, config loading.
 - `github.com/anotherhadi/ilovetui/bubbles` — themed constructors for official `bubbles/v2` components (`help`, `textarea`, `textinput`, `list`, `table`, `filepicker`, `spinner`, `progress`, `paginator`, `viewport`).
-- `github.com/anotherhadi/ilovetui/tabs`, `.../layout`, `.../modal`, `.../notification` — custom components not found in the official `bubbles` library, styled from the same theme. See each package's own README: [`tabs`](tabs/README.md), [`layout`](layout/README.md), [`modal`](modal/README.md), [`notification`](notification/README.md).
+- `github.com/anotherhadi/ilovetui/tabs`, `.../helpbar`, `.../modal`, `.../drawer`, `.../notification` — custom components not found in the official `bubbles` library, styled from the same theme.
 
 ## How it works
 
@@ -127,8 +127,9 @@ t := tabs.New([]tabs.Item{{Title: "First", Model: firstPane}, {Title: "Second", 
 `tabs` renders a horizontal tab bar styled from `style.S`. The host application renders the content
 below it; see [`tabs/README.md`](tabs/README.md) and `examples/tabs` for a full example.
 
-For the other custom components, see their own README: [`layout`](layout/README.md) (BSP pane
-layout with spatial focus navigation), [`modal`](modal/README.md) (centered popup dialogs) and
+For the other custom components, see their own README: [`helpbar`](helpbar/README.md) (responsive
+help bar that reflows into as many columns as fit), [`modal`](modal/README.md) (centered popup
+dialogs), [`drawer`](drawer/README.md) (left/right sidebar panels, mirroring `modal`) and
 [`notification`](notification/README.md) (toast notifications).
 
 ## Projects using ilovetui

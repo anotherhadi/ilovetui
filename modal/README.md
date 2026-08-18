@@ -4,9 +4,8 @@ A centered popup box on top of a dimmed background, triggered from anywhere in a
 program via an exported `tea.Msg` (`ShowMsg`/`Show`) rather than a direct reference to the
 `Model` that ends up rendering it - standard Elm architecture, no IPC between processes.
 
-It composites over an already-rendered string, so it has no dependency on
-`github.com/anotherhadi/ilovetui/layout`: the same `Model` works whether the host uses `layout`
-for its main content or not.
+It composites over an already-rendered string, so it makes no assumption about how the host
+builds that string: the same `Model` works whatever the host uses to lay out its main content.
 
 ## Quick start
 
@@ -30,7 +29,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyPressMsg:
 		if msg.String() == "d" {
-			return m, modal.Show("Delete file?", "This can't be undone.\n\ny: confirm  esc: cancel")
+			return m, modal.Show("Delete file?", modal.Text("This can't be undone.\n\ny: confirm  esc: cancel"))
 		}
 		if msg.String() == "esc" && m.m.Open() {
 			return m, modal.Close()
@@ -55,37 +54,74 @@ a reference to the `modal.Model` that will actually render it - that `Model` jus
 every `tea.Msg` the program produces (i.e. get its `Update` called from the top-level `Update`),
 same as any other child model.
 
-## Showing and dismissing
+## Content is a model
+
+A modal's body is a `tea.Model`, not a string. While a modal is on top of the stack it gets every
+message the `modal.Model` receives, its `Init` runs when it opens, and its commands come back out
+- so it can hold a form, a list, or a confirmation that reports its answer with a `tea.Msg` of
+its own, which the component that opened it listens for:
 
 ```go
-return m, modal.Show("Delete file?", "This can't be undone.", modal.WithID("confirm"))
+type confirmedMsg struct{ path string }
 
-return m, modal.Dismiss("confirm") // close a specific modal by id
-return m, modal.Close()            // close whichever modal is on top, whatever its id
+func (c confirm) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	if k, ok := msg.(tea.KeyPressMsg); ok && k.String() == "y" {
+		path := c.path
+		return c, func() tea.Msg { return confirmedMsg{path} }
+	}
+	return c, nil
+}
+
+// somewhere else
+return m, modal.Show("Delete file?", confirm{path: p})
 ```
 
+Only the topmost modal is updated: everything beneath it is dimmed and frozen until the modals
+above it close.
+
+For a modal with nothing to interact with, `modal.Text` wraps a plain string:
+
+```go
+return m, modal.Show("About", modal.Text("v1.0\n\nesc to close"))
+```
+
+The box shrinks to fit whatever the content draws, so a content that wants a specific size sets
+it on itself - the modal only ever sees the rendered result.
+
+## Showing and closing
+
+```go
+return m, modal.Show("Delete file?", confirm{})
+
+return m, modal.Close() // close the topmost modal
+```
+
+The stack is a plain LIFO, with no identity: a modal is closed by being on top, never by being
+named. There is nothing to tag a modal with, and nothing that can target one in the middle of the
+stack - the topmost is both the only one that receives messages and the only one `Close` can
+reach, so the two rules never disagree.
+
 - `modal.Open()` reports whether at least one modal is currently shown - handy for a host that
-  wants to route key presses to the modal (e.g. `esc` to dismiss, `enter` to confirm) instead of
-  its normal UI while one is open.
-- `modal.TopID()` returns the id of the topmost (currently interactive) modal, or `""` if none is
-  open - useful to tell which modal a generic key like `enter` should act on.
-- A modal shown without `WithID` gets an auto-generated id that's never returned to the caller -
-  only a modal shown with `WithID` can be targeted by `Dismiss` later. Showing again with the same
-  id replaces it in place instead of stacking a duplicate.
+  wants to route key presses to the modal instead of its normal UI while one is open. Note that a
+  host doing this also makes it impossible for a key to open a second modal, which is what keeps
+  the stack shallow without any bookkeeping.
+- A content model closes its own modal by returning `modal.Close()`, since it only ever runs while
+  it is the topmost one.
 
 ## Stacking
 
 Modals stack: showing a second one while the first is still open pushes it on top, dimming both
-the background and the first modal to the same flat color. Dismissing the top one reveals the one
+the background and the first modal to the same flat color. Closing the top one reveals the one
 beneath, still in full color. This is what lets a "delete?" confirmation open a nested "really
-sure?" modal without any special-casing.
+sure?" modal without any special-casing - the nested one is pushed by the content on top, the only
+one able to act.
 
 ## Styling
 
 ```go
 m := modal.New(modal.WithMaxWidth(60), modal.WithMaxHeight(20), modal.WithStyles(myStyles))
 
-return m, modal.Show("Title", "Message", modal.WithModalStyle(oneOffStyles))
+return m, modal.Show("Title", modal.Text("Message"), modal.WithModalStyle(oneOffStyles))
 ```
 
 `WithMaxWidth`/`WithMaxHeight` cap how large a modal box can grow before wrapping/truncating; a

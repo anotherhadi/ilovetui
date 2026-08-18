@@ -4,14 +4,14 @@ Toast-style notifications, triggered from anywhere in a bubbletea program via an
 `tea.Msg` (`ShowMsg`/`Show`) rather than a direct reference to the `Model` that ends up rendering
 them - standard Elm architecture, no IPC between processes.
 
-It composites over an already-rendered string, so it has no dependency on
-`github.com/anotherhadi/ilovetui/layout`: the same `Model` works whether the host uses `layout`
-for its main content or not.
+It composites over an already-rendered string, so it makes no assumption about how the host
+builds that string: the same `Model` works whatever the host uses to lay out its main content.
 
 ## Quick start
 
 ```go
 import (
+	tea "charm.land/bubbletea/v2"
 	"github.com/anotherhadi/ilovetui/notification"
 )
 

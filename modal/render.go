@@ -79,8 +79,9 @@ func (m Model) renderBox(mo Modal, s Styles, bgW, bgH int) string {
 	maxW := effectiveMax(m.maxWidth, bgW-2*margin)
 	maxH := effectiveMax(m.maxHeight, bgH-2*margin)
 
-	inner := contentWidth(mo, maxW)
-	content := s.Content.Width(inner).Render(mo.Content)
+	body := contentView(mo)
+	inner := contentWidth(body, mo.Title, maxW)
+	content := s.Content.Width(inner).Render(body)
 
 	boxWidth := inner + 4 // border (2) + Padding(0, 1) (2)
 	boxHeight := min(lipgloss.Height(content)+2, maxH)
@@ -88,11 +89,22 @@ func (m Model) renderBox(mo Modal, s Styles, bgW, bgH int) string {
 	return style.RenderWithTitle(s.Border, s.Title.Render(mo.Title), content, boxWidth, boxHeight)
 }
 
+// contentView is the modal body's rendered string, or "" for a modal without
+// content. The box shrinks to fit whatever the content model draws, so a
+// content that wants a specific size sets it on itself - the modal only ever
+// sees the result.
+func contentView(mo Modal) string {
+	if mo.Content == nil {
+		return ""
+	}
+	return mo.Content.View().Content
+}
+
 // contentWidth is the modal's inner (border/padding excluded) width: its
 // natural size (long enough for the widest line of title/content), capped
 // at maxWidth.
-func contentWidth(mo Modal, maxWidth int) int {
-	natural := max(naturalWidth(mo.Content), lipgloss.Width(mo.Title), 1)
+func contentWidth(body, title string, maxWidth int) int {
+	natural := max(naturalWidth(body), lipgloss.Width(title), 1)
 	capped := max(maxWidth-4, 1)
 	return min(natural, capped)
 }
