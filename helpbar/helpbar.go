@@ -1,10 +1,13 @@
 package helpbar
 
 import (
+	"strings"
+
 	"charm.land/bubbles/v2/help"
 	"charm.land/bubbles/v2/key"
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
+	"github.com/charmbracelet/x/ansi"
 
 	"github.com/anotherhadi/ilovetui/bubbles"
 )
@@ -59,10 +62,21 @@ func (m Model) View(contextual ...key.Binding) string {
 	if len(bindings) == 0 || m.width <= 0 {
 		return ""
 	}
+	var view string
 	if !m.ShowAll {
-		return m.help.ShortHelpView(bindings)
+		view = m.help.ShortHelpView(bindings)
+	} else {
+		view = m.help.FullHelpView(m.columns(bindings))
 	}
-	return m.help.FullHelpView(m.columns(bindings))
+	return m.clampWidth(view)
+}
+
+func (m Model) clampWidth(view string) string {
+	lines := strings.Split(view, "\n")
+	for i, line := range lines {
+		lines[i] = ansi.Truncate(line, m.width, "")
+	}
+	return strings.Join(lines, "\n")
 }
 
 func (m Model) Height(contextual ...key.Binding) int {

@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"charm.land/lipgloss/v2"
+	"github.com/charmbracelet/x/ansi"
 )
 
 var borderTypes = map[string]lipgloss.Border{
@@ -41,12 +42,18 @@ func RenderWithTitle(border lipgloss.Style, title, content string, width, height
 	box := border.BorderTop(false).Width(width).Height(boxH).Render(content)
 
 	boxWidth := lipgloss.Width(strings.SplitN(box, "\n", 2)[0])
-	titleW := lipgloss.Width(title)
 
 	b, _, _, _, _ := border.GetBorder()
 	topLeft, top, topRight := b.TopLeft, b.Top, b.TopRight
+	overhead := lipgloss.Width(topLeft) + lipgloss.Width(topRight) + 2
 
-	fillW := boxWidth - titleW - lipgloss.Width(topLeft) - lipgloss.Width(topRight) - 2
+	maxTitleW := max(boxWidth-overhead, 0)
+	if titleW := lipgloss.Width(title); titleW > maxTitleW {
+		title = ansi.Truncate(title, maxTitleW, "")
+	}
+	titleW := lipgloss.Width(title)
+
+	fillW := boxWidth - titleW - overhead
 	if fillW < 0 {
 		fillW = 0
 	}
