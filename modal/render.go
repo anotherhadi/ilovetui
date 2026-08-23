@@ -42,11 +42,7 @@ func (m Model) renderOne(mo Modal, background string, w, h int) string {
 	bw, bh := lipgloss.Width(box), lipgloss.Height(box)
 	x, y := max((w-bw)/2, 0), max((h-bh)/2, 0)
 
-	compositor := lipgloss.NewCompositor(
-		lipgloss.NewLayer(dim(background, s.DimColor)),
-		lipgloss.NewLayer(box).X(x).Y(y).Z(1),
-	)
-	return compositor.Render()
+	return style.Overlay(dim(background, s.DimColor), box, x, y)
 }
 
 func dim(s string, c color.Color) string {

@@ -24,11 +24,7 @@ func (m Model) Render(background string) string {
 	sw, sh := lipgloss.Width(stack), lipgloss.Height(stack)
 	x, y := placement(m.position, w, h, sw, sh)
 
-	compositor := lipgloss.NewCompositor(
-		lipgloss.NewLayer(background),
-		lipgloss.NewLayer(stack).X(x).Y(y).Z(1),
-	)
-	return compositor.Render()
+	return style.Overlay(background, stack, x, y)
 }
 
 func (m Model) View(width, height int) string {

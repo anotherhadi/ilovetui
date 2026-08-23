@@ -43,11 +43,7 @@ func (m Model) renderOne(d Drawer, background string, w, h int) string {
 		x = max(w-bw, 0)
 	}
 
-	compositor := lipgloss.NewCompositor(
-		lipgloss.NewLayer(dim(background, s.DimColor)),
-		lipgloss.NewLayer(box).X(x).Y(0).Z(1),
-	)
-	return compositor.Render()
+	return style.Overlay(dim(background, s.DimColor), box, x, 0)
 }
 
 func dim(s string, c color.Color) string {
