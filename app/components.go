@@ -2,6 +2,7 @@ package app
 
 import (
 	"image/color"
+	"strings"
 
 	"charm.land/lipgloss/v2"
 	"github.com/anotherhadi/ilovetui/style"
@@ -36,4 +37,19 @@ func RenderBadge(label string, fill color.Color) string {
 
 	cap := lipgloss.NewStyle().Foreground(fill).Background(style.S.Background)
 	return cap.Render("") + body + cap.Render("")
+}
+
+func SignalBars(signal int) string {
+	bars := []rune("▁▃▅▇")
+	level := signal * len(bars) / 100
+
+	var b strings.Builder
+	for i, ch := range bars {
+		s := lipgloss.NewStyle().Foreground(style.S.Subtle)
+		if i < level {
+			s = lipgloss.NewStyle().Foreground(style.S.Text)
+		}
+		b.WriteString(s.Render(string(ch)))
+	}
+	return b.String()
 }
