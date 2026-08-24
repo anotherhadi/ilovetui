@@ -39,8 +39,9 @@ type Styles struct {
 	Bold  lipgloss.Style
 	Faint lipgloss.Style
 
-	NerdFonts  bool
-	BorderType lipgloss.Border
+	NerdFonts    bool
+	BorderType   lipgloss.Border
+	LayoutBorder LayoutBorderMode
 
 	Panel        lipgloss.Style
 	PanelFocused lipgloss.Style
@@ -49,7 +50,7 @@ type Styles struct {
 	PagerDotInactive string
 }
 
-func newStyles(c colorsYAML, nerdFonts bool, borderName string) Styles {
+func newStyles(c colorsYAML, nerdFonts bool, borderName, layoutBorderName string) Styles {
 	lc := func(s string) color.Color {
 		s = strings.TrimSpace(s)
 		if s != "" && s[0] != '#' {
@@ -76,6 +77,7 @@ func newStyles(c colorsYAML, nerdFonts bool, borderName string) Styles {
 	b0F := lc(c.Base0F)
 
 	borderType := resolveBorderType(borderName)
+	layoutBorder := resolveLayoutBorder(layoutBorderName)
 
 	return Styles{
 		Base00: b00, Base01: b01, Base02: b02, Base03: b03,
@@ -97,8 +99,9 @@ func newStyles(c colorsYAML, nerdFonts bool, borderName string) Styles {
 		Bold:  lipgloss.NewStyle().Bold(true),
 		Faint: lipgloss.NewStyle().Foreground(b03).Faint(true),
 
-		NerdFonts:  nerdFonts,
-		BorderType: borderType,
+		NerdFonts:    nerdFonts,
+		BorderType:   borderType,
+		LayoutBorder: layoutBorder,
 
 		Panel: lipgloss.NewStyle().
 			Border(borderType).

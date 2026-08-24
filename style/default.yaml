@@ -9,6 +9,12 @@ nerd_fonts: false
 # One of: rounded, normal, thick, double, hidden, ascii.
 border: rounded
 
+# How sidebar+content layouts draw their borders. One of:
+#   full: both the sidebar and content panes get a full titled border.
+#   sidebar: only the sidebar gets a full border
+#   separator: neither pane is bordered; a single vertical line divides them.
+layout_border: full
+
 colors:
   base00: "#110F12" # Background
   base01: "#1C1920" # Lighter Background / Status Bars

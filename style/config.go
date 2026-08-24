@@ -20,9 +20,10 @@ type colorsYAML struct {
 }
 
 type configYAML struct {
-	Colors    colorsYAML `yaml:"colors"`
-	NerdFonts bool       `yaml:"nerd_fonts"`
-	Border    string     `yaml:"border"`
+	Colors       colorsYAML `yaml:"colors"`
+	NerdFonts    bool       `yaml:"nerd_fonts"`
+	Border       string     `yaml:"border"`
+	LayoutBorder string     `yaml:"layout_border"`
 }
 
 func pickString(base, user string) string {
@@ -36,8 +37,9 @@ func mergeConfig(base, user configYAML) configYAML {
 	return configYAML{
 		Colors: mergeColors(base.Colors, user.Colors),
 
-		NerdFonts: base.NerdFonts || user.NerdFonts,
-		Border:    pickString(base.Border, user.Border),
+		NerdFonts:    base.NerdFonts || user.NerdFonts,
+		Border:       pickString(base.Border, user.Border),
+		LayoutBorder: pickString(base.LayoutBorder, user.LayoutBorder),
 	}
 }
 

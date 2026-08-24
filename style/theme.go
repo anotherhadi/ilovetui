@@ -72,7 +72,7 @@ func stylesFromBytes(data []byte) (Styles, error) {
 		return Styles{}, fmt.Errorf("style: parse config: %w", err)
 	}
 	merged := mergeConfig(base, user)
-	return newStyles(merged.Colors, merged.NerdFonts, merged.Border), nil
+	return newStyles(merged.Colors, merged.NerdFonts, merged.Border, merged.LayoutBorder), nil
 }
 
 func configDir() string {
