@@ -1,4 +1,2 @@
-.claude/
-CLAUDE.md
-result/
-.pre-commit-config.yaml
+node_modules/
+dist/

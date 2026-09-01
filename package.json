@@ -1,0 +1,61 @@
+{
+  "name": "ilovetui",
+  "version": "0.1.0",
+  "module": "dist/index.js",
+  "type": "module",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": { "types": "./src/index.ts", "default": "./dist/index.js" },
+    "./solid": { "types": "./src/solid.ts", "default": "./dist/solid.js" },
+    "./context": { "types": "./src/context/index.ts", "default": "./dist/context/index.js" },
+    "./project-config": { "types": "./src/project-config.ts", "default": "./dist/project-config.js" },
+    "./keymap": { "types": "./src/keymap/provider.tsx", "default": "./dist/keymap/provider.js" },
+    "./components": { "types": "./src/components/index.ts", "default": "./dist/components/index.js" },
+    "./components/spinner": { "types": "./src/components/Spinner.tsx", "default": "./dist/components/Spinner.js" },
+    "./components/help": { "types": "./src/components/help.ts", "default": "./dist/components/help.js" }
+  },
+  "private": true,
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "bun run scripts/build.ts",
+    "prepare": "bun run scripts/build.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "@opentui/core": ">=0.5.0",
+    "@opentui/solid": ">=0.5.0",
+    "@opentui/keymap": ">=0.5.0",
+    "solid-js": ">=1.9.0",
+    "opentui-spinner": ">=0.0.7"
+  },
+  "peerDependenciesMeta": {
+    "@opentui/core": {
+      "optional": true
+    },
+    "@opentui/solid": {
+      "optional": true
+    },
+    "@opentui/keymap": {
+      "optional": true
+    },
+    "solid-js": {
+      "optional": true
+    },
+    "opentui-spinner": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "yaml": "^2.8.1",
+    "zod": "^4.5.4"
+  },
+  "devDependencies": {
+    "@opentui/core": "^0.5.9",
+    "@opentui/keymap": "^0.5.9",
+    "@opentui/solid": "^0.5.9",
+    "@types/bun": "^1.3.14",
+    "opentui-spinner": "^0.0.7",
+    "solid-js": "1.9.12",
+    "typescript": "^5.9.3"
+  }
+}

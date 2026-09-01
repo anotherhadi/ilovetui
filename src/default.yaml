@@ -1,0 +1,35 @@
+# ilovetui default config
+# Copy to ~/.config/ilovetui/config.yaml and edit to customize.
+
+# Whether components may use Nerd Font glyphs (requires a patched font).
+nerd_fonts: true
+
+# Whether the terminal font can render emoji glyphs.
+emoji_fonts: true
+
+# Disable spinner animation and other motion across all ilovetui-based TUIs.
+reduced_motion: false
+
+# Whether components may register mouse handlers (e.g. click-to-dismiss).
+mouse: true
+
+# Border style used by panels across all ilovetui-based TUIs.
+border: rounded
+
+colors:
+  base00: "#110F12" # Background
+  base01: "#1C1920" # Lighter Background / Status Bars
+  base02: "#1D1A26" # Selection Background
+  base03: "#514D63" # Comments / Invisibles
+  base04: "#8E8AA0" # Dark Foreground / Status Bars
+  base05: "#C2BED6" # Default Foreground
+  base06: "#D8D5EA" # Light Foreground
+  base07: "#EAE7F7" # Light Background
+  base08: "#E07080" # Variables / Errors / Diff Deleted
+  base09: "#D49070" # Integers / Constants / Booleans
+  base0a: "#C4B060" # Classes / Warnings / Search Background
+  base0b: "#80B880" # Strings / Success / Diff Inserted
+  base0c: "#70B8C0" # Support / Regex / Escape Characters
+  base0d: "#9E97F8" # Functions / Methods / Headings / Accent
+  base0e: "#C090E8" # Keywords / Storage / Diff Changed
+  base0f: "#D080A0" # Embedded / Misc
