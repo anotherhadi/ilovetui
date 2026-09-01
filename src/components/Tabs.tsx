@@ -1,4 +1,4 @@
-import { type ColorInput, CliRenderEvents, TextAttributes, type BoxRenderable } from "@opentui/core";
+import { type BorderCharacters, type BoxRenderable, type ColorInput, BorderChars, CliRenderEvents, TextAttributes } from "@opentui/core";
 import { onResize, useRenderer } from "@opentui/solid";
 import { createMemo, createSignal, For } from "solid-js";
 import { theme } from "../index.ts";
@@ -31,27 +31,31 @@ function segmentWidth(label: string): number {
   return innerWidth(label) + 2;
 }
 
-function topEdge(label: string): string {
-  return `╭${"─".repeat(innerWidth(label))}╮`;
+function topEdge(chars: BorderCharacters, label: string): string {
+  return `${chars.topLeft}${chars.horizontal.repeat(innerWidth(label))}${chars.topRight}`;
 }
 
-function bottomEdge(label: string, isFirst: boolean, isLast: boolean, isActive: boolean): string {
-  const left = isFirst ? (isActive ? "│" : "├") : isActive ? "╯" : "┴";
-  const right = isLast ? (isActive ? "│" : "┤") : isActive ? "╰" : "┴";
-  const fill = isActive ? " " : "─";
+function bottomEdge(chars: BorderCharacters, label: string, isFirst: boolean, isLast: boolean, isActive: boolean): string {
+  const left = isFirst ? (isActive ? chars.vertical : chars.leftT) : isActive ? chars.bottomRight : chars.bottomT;
+  const right = isLast ? (isActive ? chars.vertical : chars.rightT) : isActive ? chars.bottomLeft : chars.bottomT;
+  const fill = isActive ? " " : chars.horizontal;
   return left + fill.repeat(innerWidth(label)) + right;
 }
 
-function buildBottomRow(segments: { label: string; isActive: boolean }[], available: number): string {
+function buildBottomRow(
+  chars: BorderCharacters,
+  segments: { label: string; isActive: boolean }[],
+  available: number,
+): string {
   const tabsWidth = segments.reduce((sum, s) => sum + segmentWidth(s.label), 0);
   const remainder = available - tabsWidth;
   const extending = remainder > 0;
 
   const tabs = segments
-    .map((s, i) => bottomEdge(s.label, i === 0, i === segments.length - 1 && !extending, s.isActive))
+    .map((s, i) => bottomEdge(chars, s.label, i === 0, i === segments.length - 1 && !extending, s.isActive))
     .join("");
 
-  return extending ? tabs + "─".repeat(remainder - 1) + "╮" : tabs;
+  return extending ? tabs + chars.horizontal.repeat(remainder - 1) + chars.topRight : tabs;
 }
 
 function fitCount(items: TabItem[], start: number, available: number): number {
@@ -117,6 +121,7 @@ export function Tabs(props: TabsProps) {
   const muted = () => props.mutedColor ?? theme.muted;
 
   const borderColor = () => (props.focused ? accent() : muted());
+  const chars = BorderChars[theme.borderStyle];
 
   return (
     <box
@@ -126,25 +131,36 @@ export function Tabs(props: TabsProps) {
         remeasureNextFrame();
       }}
     >
-      <text fg={borderColor()}>{segments().map((s) => topEdge(s.label)).join("")}</text>
+      <text selectable={false} fg={borderColor()}>
+        {segments()
+          .map((s) => topEdge(chars, s.label))
+          .join("")}
+      </text>
       <box flexDirection="row">
         <For each={segments()}>
           {(s) => (
             <>
-              <text fg={borderColor()}>│</text>
+              <text selectable={false} fg={borderColor()}>
+                {chars.vertical}
+              </text>
               <text
+                selectable={false}
                 fg={s.isActive ? accent() : muted()}
                 attributes={s.isActive ? TextAttributes.BOLD : undefined}
                 onMouseDown={theme.mouse && s.value !== undefined ? () => props.onChange(s.value!) : undefined}
               >
                 {` ${s.label} `}
               </text>
-              <text fg={borderColor()}>│</text>
+              <text selectable={false} fg={borderColor()}>
+                {chars.vertical}
+              </text>
             </>
           )}
         </For>
       </box>
-      <text fg={borderColor()}>{buildBottomRow(segments(), width())}</text>
+      <text selectable={false} fg={borderColor()}>
+        {buildBottomRow(chars, segments(), width())}
+      </text>
     </box>
   );
 }

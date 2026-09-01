@@ -4,7 +4,6 @@ import {
 } from "./chunk-57mam43k.js";
 
 // src/components/Tabs.tsx
-import { createTextNode as _$createTextNode } from "@opentui/solid";
 import { effect as _$effect } from "@opentui/solid";
 import { insertNode as _$insertNode } from "@opentui/solid";
 import { createComponent as _$createComponent } from "@opentui/solid";
@@ -12,7 +11,7 @@ import { insert as _$insert } from "@opentui/solid";
 import { use as _$use } from "@opentui/solid";
 import { setProp as _$setProp } from "@opentui/solid";
 import { createElement as _$createElement } from "@opentui/solid";
-import { CliRenderEvents, TextAttributes } from "@opentui/core";
+import { BorderChars, CliRenderEvents, TextAttributes } from "@opentui/core";
 import { onResize, useRenderer } from "@opentui/solid";
 import { createMemo, createSignal, For } from "solid-js";
 function stepTabValue(items, value, delta) {
@@ -27,21 +26,21 @@ function innerWidth(label) {
 function segmentWidth(label) {
   return innerWidth(label) + 2;
 }
-function topEdge(label) {
-  return `\u256D${"\u2500".repeat(innerWidth(label))}\u256E`;
+function topEdge(chars, label) {
+  return `${chars.topLeft}${chars.horizontal.repeat(innerWidth(label))}${chars.topRight}`;
 }
-function bottomEdge(label, isFirst, isLast, isActive) {
-  const left = isFirst ? isActive ? "\u2502" : "\u251C" : isActive ? "\u256F" : "\u2534";
-  const right = isLast ? isActive ? "\u2502" : "\u2524" : isActive ? "\u2570" : "\u2534";
-  const fill = isActive ? " " : "\u2500";
+function bottomEdge(chars, label, isFirst, isLast, isActive) {
+  const left = isFirst ? isActive ? chars.vertical : chars.leftT : isActive ? chars.bottomRight : chars.bottomT;
+  const right = isLast ? isActive ? chars.vertical : chars.rightT : isActive ? chars.bottomLeft : chars.bottomT;
+  const fill = isActive ? " " : chars.horizontal;
   return left + fill.repeat(innerWidth(label)) + right;
 }
-function buildBottomRow(segments, available) {
+function buildBottomRow(chars, segments, available) {
   const tabsWidth = segments.reduce((sum, s) => sum + segmentWidth(s.label), 0);
   const remainder = available - tabsWidth;
   const extending = remainder > 0;
-  const tabs = segments.map((s, i) => bottomEdge(s.label, i === 0, i === segments.length - 1 && !extending, s.isActive)).join("");
-  return extending ? tabs + "\u2500".repeat(remainder - 1) + "\u256E" : tabs;
+  const tabs = segments.map((s, i) => bottomEdge(chars, s.label, i === 0, i === segments.length - 1 && !extending, s.isActive)).join("");
+  return extending ? tabs + chars.horizontal.repeat(remainder - 1) + chars.topRight : tabs;
 }
 function fitCount(items, start, available) {
   const hiddenBefore = start;
@@ -102,6 +101,7 @@ function Tabs(props) {
   const accent = () => props.accentColor ?? theme.primary;
   const muted = () => props.mutedColor ?? theme.muted;
   const borderColor = () => props.focused ? accent() : muted();
+  const chars = BorderChars[theme.borderStyle];
   return (() => {
     var _el$ = _$createElement("box"), _el$2 = _$createElement("text"), _el$3 = _$createElement("box"), _el$4 = _$createElement("text");
     _$insertNode(_el$, _el$2);
@@ -112,7 +112,8 @@ function Tabs(props) {
       remeasureNextFrame();
     }, _el$);
     _$setProp(_el$, "flexDirection", "column");
-    _$insert(_el$2, () => segments().map((s) => topEdge(s.label)).join(""));
+    _$setProp(_el$2, "selectable", false);
+    _$insert(_el$2, () => segments().map((s) => topEdge(chars, s.label)).join(""));
     _$setProp(_el$3, "flexDirection", "row");
     _$insert(_el$3, _$createComponent(For, {
       get each() {
@@ -120,32 +121,36 @@ function Tabs(props) {
       },
       children: (s) => [(() => {
         var _el$5 = _$createElement("text");
-        _$insertNode(_el$5, _$createTextNode(`\u2502`));
+        _$setProp(_el$5, "selectable", false);
+        _$insert(_el$5, () => chars.vertical);
         _$effect((_$p) => _$setProp(_el$5, "fg", borderColor(), _$p));
         return _el$5;
       })(), (() => {
-        var _el$7 = _$createElement("text");
-        _$insert(_el$7, () => ` ${s.label} `);
+        var _el$6 = _$createElement("text");
+        _$setProp(_el$6, "selectable", false);
+        _$insert(_el$6, () => ` ${s.label} `);
         _$effect((_p$) => {
           var _v$3 = s.isActive ? accent() : muted(), _v$4 = s.isActive ? TextAttributes.BOLD : undefined, _v$5 = theme.mouse && s.value !== undefined ? () => props.onChange(s.value) : undefined;
-          _v$3 !== _p$.e && (_p$.e = _$setProp(_el$7, "fg", _v$3, _p$.e));
-          _v$4 !== _p$.t && (_p$.t = _$setProp(_el$7, "attributes", _v$4, _p$.t));
-          _v$5 !== _p$.a && (_p$.a = _$setProp(_el$7, "onMouseDown", _v$5, _p$.a));
+          _v$3 !== _p$.e && (_p$.e = _$setProp(_el$6, "fg", _v$3, _p$.e));
+          _v$4 !== _p$.t && (_p$.t = _$setProp(_el$6, "attributes", _v$4, _p$.t));
+          _v$5 !== _p$.a && (_p$.a = _$setProp(_el$6, "onMouseDown", _v$5, _p$.a));
           return _p$;
         }, {
           e: undefined,
           t: undefined,
           a: undefined
         });
-        return _el$7;
+        return _el$6;
       })(), (() => {
-        var _el$8 = _$createElement("text");
-        _$insertNode(_el$8, _$createTextNode(`\u2502`));
-        _$effect((_$p) => _$setProp(_el$8, "fg", borderColor(), _$p));
-        return _el$8;
+        var _el$7 = _$createElement("text");
+        _$setProp(_el$7, "selectable", false);
+        _$insert(_el$7, () => chars.vertical);
+        _$effect((_$p) => _$setProp(_el$7, "fg", borderColor(), _$p));
+        return _el$7;
       })()]
     }));
-    _$insert(_el$4, () => buildBottomRow(segments(), width()));
+    _$setProp(_el$4, "selectable", false);
+    _$insert(_el$4, () => buildBottomRow(chars, segments(), width()));
     _$effect((_p$) => {
       var _v$ = borderColor(), _v$2 = borderColor();
       _v$ !== _p$.e && (_p$.e = _$setProp(_el$2, "fg", _v$, _p$.e));

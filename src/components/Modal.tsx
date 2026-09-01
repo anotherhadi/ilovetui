@@ -1,4 +1,4 @@
-import { type ColorInput, RGBA } from "@opentui/core";
+import { type ColorInput, type MouseEvent, RGBA } from "@opentui/core";
 import { Portal, useTerminalDimensions } from "@opentui/solid";
 import { Show, type ParentProps } from "solid-js";
 import { theme } from "../index.ts";
@@ -41,6 +41,7 @@ export function Modal(props: ModalProps) {
             paddingRight={2}
             paddingTop={1}
             paddingBottom={1}
+            onMouseDown={theme.mouse ? (event: MouseEvent) => event.stopPropagation() : undefined}
           >
             {props.children}
           </box>

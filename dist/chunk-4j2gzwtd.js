@@ -37,7 +37,7 @@ function Modal(props) {
           _$setProp(_el$2, "paddingBottom", 1);
           _$insert(_el$2, () => props.children);
           _$effect((_p$) => {
-            var _v$ = dimensions().width, _v$2 = dimensions().height, _v$3 = Math.floor(dimensions().height / 4), _v$4 = props.backdropColor ?? RGBA.fromInts(0, 0, 0, 150), _v$5 = theme.mouse ? props.onDismiss : undefined, _v$6 = props.width ?? 50, _v$7 = theme.borderStyle, _v$8 = props.accentColor ?? theme.primary, _v$9 = props.backgroundColor ?? theme.background;
+            var _v$ = dimensions().width, _v$2 = dimensions().height, _v$3 = Math.floor(dimensions().height / 4), _v$4 = props.backdropColor ?? RGBA.fromInts(0, 0, 0, 150), _v$5 = theme.mouse ? props.onDismiss : undefined, _v$6 = props.width ?? 50, _v$7 = theme.borderStyle, _v$8 = props.accentColor ?? theme.primary, _v$9 = props.backgroundColor ?? theme.background, _v$0 = theme.mouse ? (event) => event.stopPropagation() : undefined;
             _v$ !== _p$.e && (_p$.e = _$setProp(_el$, "width", _v$, _p$.e));
             _v$2 !== _p$.t && (_p$.t = _$setProp(_el$, "height", _v$2, _p$.t));
             _v$3 !== _p$.a && (_p$.a = _$setProp(_el$, "paddingTop", _v$3, _p$.a));
@@ -47,6 +47,7 @@ function Modal(props) {
             _v$7 !== _p$.s && (_p$.s = _$setProp(_el$2, "borderStyle", _v$7, _p$.s));
             _v$8 !== _p$.h && (_p$.h = _$setProp(_el$2, "borderColor", _v$8, _p$.h));
             _v$9 !== _p$.r && (_p$.r = _$setProp(_el$2, "backgroundColor", _v$9, _p$.r));
+            _v$0 !== _p$.d && (_p$.d = _$setProp(_el$2, "onMouseDown", _v$0, _p$.d));
             return _p$;
           }, {
             e: undefined,
@@ -57,7 +58,8 @@ function Modal(props) {
             n: undefined,
             s: undefined,
             h: undefined,
-            r: undefined
+            r: undefined,
+            d: undefined
           });
           return _el$;
         }
