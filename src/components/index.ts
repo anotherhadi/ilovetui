@@ -1,4 +1,5 @@
 export { Badge, type BadgeProps } from "./Badge.tsx";
+export { Box, type BoxProps } from "./Box.tsx";
 export { MinSizeGuard, type MinSizeGuardProps } from "./MinSizeGuard.tsx";
 export { Modal, type ModalProps } from "./Modal.tsx";
 export { NotificationHost, type NotificationHostProps } from "./NotificationHost.tsx";
