@@ -1,7 +1,7 @@
 // @bun
 import {
   Badge
-} from "../chunk-shxcerba.js";
+} from "../chunk-wasbecqm.js";
 import"../chunk-57mam43k.js";
 import"../chunk-ergc99dh.js";
 import"../chunk-7f8jagy5.js";
