@@ -2,8 +2,8 @@ import { type ColorInput, TextAttributes } from "@opentui/core";
 import { Show } from "solid-js";
 import { theme } from "../index.ts";
 
-const CAP_LEFT = "";
-const CAP_RIGHT = "";
+const CAP_LEFT = "";
+const CAP_RIGHT = "";
 
 export interface BadgeProps {
   label: string;
