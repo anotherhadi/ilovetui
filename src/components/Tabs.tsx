@@ -1,6 +1,6 @@
 import { type BorderCharacters, type BoxRenderable, type ColorInput, BorderChars, CliRenderEvents, TextAttributes } from "@opentui/core";
 import { onResize, useRenderer } from "@opentui/solid";
-import { createMemo, createSignal, For } from "solid-js";
+import { createMemo, createSignal, Index } from "solid-js";
 import { theme } from "../index.ts";
 
 export interface TabItem {
@@ -126,6 +126,7 @@ export function Tabs(props: TabsProps) {
   return (
     <box
       flexDirection="column"
+      height={3}
       ref={(el) => {
         container = el;
         remeasureNextFrame();
@@ -137,7 +138,7 @@ export function Tabs(props: TabsProps) {
           .join("")}
       </text>
       <box flexDirection="row">
-        <For each={segments()}>
+        <Index each={segments()}>
           {(s) => (
             <>
               <text selectable={false} fg={borderColor()}>
@@ -145,18 +146,18 @@ export function Tabs(props: TabsProps) {
               </text>
               <text
                 selectable={false}
-                fg={s.isActive ? accent() : muted()}
-                attributes={s.isActive ? TextAttributes.BOLD : undefined}
-                onMouseDown={theme.mouse && s.value !== undefined ? () => props.onChange(s.value!) : undefined}
+                fg={s().isActive ? accent() : muted()}
+                attributes={s().isActive ? TextAttributes.BOLD : undefined}
+                onMouseDown={theme.mouse && s().value !== undefined ? () => props.onChange(s().value!) : undefined}
               >
-                {` ${s.label} `}
+                {` ${s().label} `}
               </text>
               <text selectable={false} fg={borderColor()}>
                 {chars.vertical}
               </text>
             </>
           )}
-        </For>
+        </Index>
       </box>
       <text selectable={false} fg={borderColor()}>
         {buildBottomRow(chars, segments(), width())}
