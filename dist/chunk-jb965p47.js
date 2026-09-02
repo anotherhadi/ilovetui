@@ -13,7 +13,7 @@ import { setProp as _$setProp } from "@opentui/solid";
 import { createElement as _$createElement } from "@opentui/solid";
 import { BorderChars, CliRenderEvents, TextAttributes } from "@opentui/core";
 import { onResize, useRenderer } from "@opentui/solid";
-import { createMemo, createSignal, For } from "solid-js";
+import { createMemo, createSignal, Index } from "solid-js";
 function stepTabValue(items, value, delta) {
   const index = items.findIndex((t) => t.value === value);
   if (index === -1)
@@ -112,10 +112,11 @@ function Tabs(props) {
       remeasureNextFrame();
     }, _el$);
     _$setProp(_el$, "flexDirection", "column");
+    _$setProp(_el$, "height", 3);
     _$setProp(_el$2, "selectable", false);
     _$insert(_el$2, () => segments().map((s) => topEdge(chars, s.label)).join(""));
     _$setProp(_el$3, "flexDirection", "row");
-    _$insert(_el$3, _$createComponent(For, {
+    _$insert(_el$3, _$createComponent(Index, {
       get each() {
         return segments();
       },
@@ -128,9 +129,9 @@ function Tabs(props) {
       })(), (() => {
         var _el$6 = _$createElement("text");
         _$setProp(_el$6, "selectable", false);
-        _$insert(_el$6, () => ` ${s.label} `);
+        _$insert(_el$6, () => ` ${s().label} `);
         _$effect((_p$) => {
-          var _v$3 = s.isActive ? accent() : muted(), _v$4 = s.isActive ? TextAttributes.BOLD : undefined, _v$5 = theme.mouse && s.value !== undefined ? () => props.onChange(s.value) : undefined;
+          var _v$3 = s().isActive ? accent() : muted(), _v$4 = s().isActive ? TextAttributes.BOLD : undefined, _v$5 = theme.mouse && s().value !== undefined ? () => props.onChange(s().value) : undefined;
           _v$3 !== _p$.e && (_p$.e = _$setProp(_el$6, "fg", _v$3, _p$.e));
           _v$4 !== _p$.t && (_p$.t = _$setProp(_el$6, "attributes", _v$4, _p$.t));
           _v$5 !== _p$.a && (_p$.a = _$setProp(_el$6, "onMouseDown", _v$5, _p$.a));
