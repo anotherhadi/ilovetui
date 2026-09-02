@@ -24,7 +24,7 @@ export function stepTabValue(items: TabItem[], value: string, delta: number): st
 }
 
 function innerWidth(label: string): number {
-  return label.length + 2;
+  return [...label].length + 2;
 }
 
 function segmentWidth(label: string): number {
