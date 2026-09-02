@@ -21,7 +21,7 @@ function stepTabValue(items, value, delta) {
   return items[(index + delta + items.length) % items.length].value;
 }
 function innerWidth(label) {
-  return label.length + 2;
+  return [...label].length + 2;
 }
 function segmentWidth(label) {
   return innerWidth(label) + 2;
