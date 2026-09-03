@@ -34,7 +34,11 @@ function buildPresets(theme) {
     focusedBorderColor: theme.primary,
     backgroundColor: theme.background
   };
-  return { select, tabSelect, input, textarea: input, box };
+  const slider = {
+    backgroundColor: theme.subtleBg,
+    foregroundColor: theme.primary
+  };
+  return { select, tabSelect, input, textarea: input, box, slider };
 }
 
 export { buildPresets };

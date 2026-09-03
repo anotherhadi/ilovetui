@@ -2,10 +2,10 @@
 import {
   presets,
   theme
-} from "./chunk-57mam43k.js";
-import"./chunk-ergc99dh.js";
+} from "./chunk-x7m82z3z.js";
 import"./chunk-7f8jagy5.js";
 import"./chunk-hcq62p48.js";
+import"./chunk-cnhhssmz.js";
 
 // src/solid.ts
 import { extend } from "@opentui/solid";
@@ -14,6 +14,7 @@ import {
   BoxRenderable,
   InputRenderable,
   SelectRenderable,
+  SliderRenderable,
   TabSelectRenderable,
   TextareaRenderable,
   TextRenderable
@@ -38,6 +39,7 @@ extend({
   tab_select: withThemeDefaults(TabSelectRenderable, presets.tabSelect),
   input: withThemeDefaults(InputRenderable, presets.input),
   textarea: withThemeDefaults(TextareaRenderable, presets.textarea),
+  slider: withThemeDefaults(SliderRenderable, presets.slider),
   text: withThemeDefaults(TextRenderable, { fg: theme.text }),
   ascii_font: withThemeDefaults(ASCIIFontRenderable, { color: theme.primary })
 });

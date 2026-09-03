@@ -37,12 +37,18 @@ export interface BoxPreset {
   backgroundColor: string;
 }
 
+export interface SliderPreset {
+  backgroundColor: string;
+  foregroundColor: string;
+}
+
 export interface Presets {
   select: SelectPreset;
   tabSelect: TabSelectPreset;
   input: InputPreset;
   textarea: InputPreset;
   box: BoxPreset;
+  slider: SliderPreset;
 }
 
 export function buildPresets(theme: Theme): Presets {
@@ -83,5 +89,10 @@ export function buildPresets(theme: Theme): Presets {
     backgroundColor: theme.background,
   };
 
-  return { select, tabSelect, input, textarea: input, box };
+  const slider: SliderPreset = {
+    backgroundColor: theme.subtleBg,
+    foregroundColor: theme.primary,
+  };
+
+  return { select, tabSelect, input, textarea: input, box, slider };
 }

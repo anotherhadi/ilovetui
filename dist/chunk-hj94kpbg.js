@@ -2,7 +2,7 @@
 import {
   presets,
   theme
-} from "./chunk-57mam43k.js";
+} from "./chunk-x7m82z3z.js";
 
 // src/components/Sidebar.tsx
 import { use as _$use } from "@opentui/solid";

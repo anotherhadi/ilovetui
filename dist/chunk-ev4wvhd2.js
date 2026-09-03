@@ -1,7 +1,7 @@
 // @bun
 import {
   theme
-} from "./chunk-57mam43k.js";
+} from "./chunk-x7m82z3z.js";
 
 // src/components/Tabs.tsx
 import { effect as _$effect } from "@opentui/solid";
