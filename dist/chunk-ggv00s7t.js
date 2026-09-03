@@ -1,7 +1,7 @@
 // @bun
 import {
   Modal
-} from "./chunk-6g54ffq0.js";
+} from "./chunk-8j8kdeb4.js";
 import {
   helpOpen,
   toggleHelp
@@ -53,6 +53,10 @@ function HelpModal(props = {}) {
     get width() {
       return props.width;
     },
+    get maxHeight() {
+      return entries().length + 6;
+    },
+    scrollable: true,
     get children() {
       return [(() => {
         var _el$ = _$createElement("text");

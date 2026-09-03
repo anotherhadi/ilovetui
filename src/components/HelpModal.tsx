@@ -36,6 +36,8 @@ export function HelpModal(props: HelpModalProps = {}) {
       backgroundColor={props.backgroundColor}
       backdropColor={props.backdropColor}
       width={props.width}
+      maxHeight={entries().length + 6}
+      scrollable
     >
       <text attributes={TextAttributes.BOLD}>Keybindings</text>
       <text> </text>

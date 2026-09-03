@@ -10,17 +10,14 @@ export interface ModalProps extends ParentProps {
   backgroundColor?: ColorInput;
   backdropColor?: ColorInput;
   width?: number;
+  maxHeight?: number;
+  scrollable?: boolean;
 }
 
 export function Modal(props: ModalProps) {
   const dimensions = useTerminalDimensions();
-  // Leave a margin of screen rows above/below so the panel never touches the
-  // terminal edges, then reserve the border + vertical padding from that
-  // budget for the scrollable content itself. On a short terminal (or with
-  // a lot of content, e.g. HelpModal's keybinding list) this keeps the panel
-  // fully on-screen — with a scrollbar — instead of spilling past the bottom
-  // edge with no way to see or reach the rest of it.
-  const maxPanelHeight = () => Math.max(5, dimensions().height - 4);
+  const screenCap = () => Math.max(5, dimensions().height - 4);
+  const maxPanelHeight = () => Math.min(props.maxHeight ?? screenCap(), screenCap());
   const maxContentHeight = () => Math.max(1, maxPanelHeight() - 4);
 
   return (
@@ -52,9 +49,18 @@ export function Modal(props: ModalProps) {
             paddingBottom={1}
             onMouseDown={theme.mouse ? (event: MouseEvent) => event.stopPropagation() : undefined}
           >
-            <scrollbox maxHeight={maxContentHeight()} flexShrink={1} scrollY scrollX={false}>
-              {props.children}
-            </scrollbox>
+            <Show
+              when={props.scrollable}
+              fallback={
+                <box flexDirection="column" maxHeight={maxContentHeight()} overflow="hidden">
+                  {props.children}
+                </box>
+              }
+            >
+              <scrollbox maxHeight={maxContentHeight()} flexShrink={1} scrollY scrollX={false}>
+                {props.children}
+              </scrollbox>
+            </Show>
           </box>
         </box>
       </Show>
