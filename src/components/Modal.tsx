@@ -19,6 +19,8 @@ export function Modal(props: ModalProps) {
   const screenCap = () => Math.max(5, dimensions().height - 4);
   const maxPanelHeight = () => Math.min(props.maxHeight ?? screenCap(), screenCap());
   const maxContentHeight = () => Math.max(1, maxPanelHeight() - 4);
+  const maxPanelWidth = () => Math.max(10, dimensions().width - 4);
+  const panelWidth = () => Math.min(props.width ?? 50, maxPanelWidth());
 
   return (
     <Portal>
@@ -36,7 +38,7 @@ export function Modal(props: ModalProps) {
           onMouseDown={theme.mouse ? props.onDismiss : undefined}
         >
           <box
-            width={props.width ?? 50}
+            width={panelWidth()}
             maxHeight={maxPanelHeight()}
             border
             borderStyle={theme.borderStyle}

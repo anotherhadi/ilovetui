@@ -18,6 +18,8 @@ function Modal(props) {
   const screenCap = () => Math.max(5, dimensions().height - 4);
   const maxPanelHeight = () => Math.min(props.maxHeight ?? screenCap(), screenCap());
   const maxContentHeight = () => Math.max(1, maxPanelHeight() - 4);
+  const maxPanelWidth = () => Math.max(10, dimensions().width - 4);
+  const panelWidth = () => Math.min(props.width ?? 50, maxPanelWidth());
   return _$createComponent(Portal, {
     get children() {
       return _$createComponent(Show, {
@@ -64,7 +66,7 @@ function Modal(props) {
             }
           }));
           _$effect((_p$) => {
-            var _v$ = dimensions().width, _v$2 = dimensions().height, _v$3 = props.backdropColor ?? RGBA.fromInts(0, 0, 0, 150), _v$4 = theme.mouse ? props.onDismiss : undefined, _v$5 = props.width ?? 50, _v$6 = maxPanelHeight(), _v$7 = theme.borderStyle, _v$8 = props.accentColor ?? theme.primary, _v$9 = props.backgroundColor ?? theme.background, _v$0 = theme.mouse ? (event) => event.stopPropagation() : undefined;
+            var _v$ = dimensions().width, _v$2 = dimensions().height, _v$3 = props.backdropColor ?? RGBA.fromInts(0, 0, 0, 150), _v$4 = theme.mouse ? props.onDismiss : undefined, _v$5 = panelWidth(), _v$6 = maxPanelHeight(), _v$7 = theme.borderStyle, _v$8 = props.accentColor ?? theme.primary, _v$9 = props.backgroundColor ?? theme.background, _v$0 = theme.mouse ? (event) => event.stopPropagation() : undefined;
             _v$ !== _p$.e && (_p$.e = _$setProp(_el$, "width", _v$, _p$.e));
             _v$2 !== _p$.t && (_p$.t = _$setProp(_el$, "height", _v$2, _p$.t));
             _v$3 !== _p$.a && (_p$.a = _$setProp(_el$, "backgroundColor", _v$3, _p$.a));
