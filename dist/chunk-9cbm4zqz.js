@@ -1,9 +1,5 @@
 // @bun
 import {
-  configPath,
-  readYamlFile
-} from "./chunk-7f8jagy5.js";
-import {
   mergeConfig,
   normalizeColors,
   resolveBorderStyle
@@ -11,6 +7,10 @@ import {
 import {
   buildPresets
 } from "./chunk-cnhhssmz.js";
+import {
+  configPath,
+  readYamlFile
+} from "./chunk-7f8jagy5.js";
 
 // src/index.ts
 import { join } from "path";
