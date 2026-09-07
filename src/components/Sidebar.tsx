@@ -46,7 +46,10 @@ export function Sidebar(props: SidebarProps) {
   const handleMouseDown = (event: MouseEvent) => {
     if (!select) return;
     const index = itemIndexAtScreenY(select, event.y);
-    if (index !== null) select.setSelectedIndex(index);
+    if (index !== null) {
+      select.setSelectedIndex(index);
+      select.selectCurrent();
+    }
   };
 
   const handleMouseScroll = (event: MouseEvent) => {
