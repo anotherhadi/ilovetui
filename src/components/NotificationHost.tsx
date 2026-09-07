@@ -14,6 +14,7 @@ const KIND_LABEL: Record<NotificationKind, string> = {
 export interface NotificationHostProps {
   width?: number;
   colors?: Partial<Record<NotificationKind, ColorInput>>;
+  backgroundColor?: ColorInput;
 }
 
 export function NotificationHost(props: NotificationHostProps = {}) {
@@ -34,6 +35,7 @@ export function NotificationHost(props: NotificationHostProps = {}) {
               border
               borderStyle={theme.borderStyle}
               borderColor={colorFor(toast.kind)}
+              backgroundColor={props.backgroundColor ?? theme.background}
               width={props.width ?? 32}
               marginBottom={1}
               onMouseDown={theme.mouse ? () => dismiss(toast.id) : undefined}

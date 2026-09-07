@@ -52,19 +52,21 @@ function NotificationHost(props = {}) {
           _$insert(_el$3, () => toast.title ?? KIND_LABEL[toast.kind]);
           _$insert(_el$4, () => toast.message);
           _$effect((_p$) => {
-            var _v$ = theme.borderStyle, _v$2 = colorFor(toast.kind), _v$3 = props.width ?? 32, _v$4 = theme.mouse ? () => dismiss(toast.id) : undefined, _v$5 = colorFor(toast.kind);
+            var _v$ = theme.borderStyle, _v$2 = colorFor(toast.kind), _v$3 = props.backgroundColor ?? theme.background, _v$4 = props.width ?? 32, _v$5 = theme.mouse ? () => dismiss(toast.id) : undefined, _v$6 = colorFor(toast.kind);
             _v$ !== _p$.e && (_p$.e = _$setProp(_el$2, "borderStyle", _v$, _p$.e));
             _v$2 !== _p$.t && (_p$.t = _$setProp(_el$2, "borderColor", _v$2, _p$.t));
-            _v$3 !== _p$.a && (_p$.a = _$setProp(_el$2, "width", _v$3, _p$.a));
-            _v$4 !== _p$.o && (_p$.o = _$setProp(_el$2, "onMouseDown", _v$4, _p$.o));
-            _v$5 !== _p$.i && (_p$.i = _$setProp(_el$3, "fg", _v$5, _p$.i));
+            _v$3 !== _p$.a && (_p$.a = _$setProp(_el$2, "backgroundColor", _v$3, _p$.a));
+            _v$4 !== _p$.o && (_p$.o = _$setProp(_el$2, "width", _v$4, _p$.o));
+            _v$5 !== _p$.i && (_p$.i = _$setProp(_el$2, "onMouseDown", _v$5, _p$.i));
+            _v$6 !== _p$.n && (_p$.n = _$setProp(_el$3, "fg", _v$6, _p$.n));
             return _p$;
           }, {
             e: undefined,
             t: undefined,
             a: undefined,
             o: undefined,
-            i: undefined
+            i: undefined,
+            n: undefined
           });
           return _el$2;
         })()
