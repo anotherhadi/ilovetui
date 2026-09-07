@@ -15,6 +15,13 @@ import { setProp as _$setProp } from "@opentui/solid";
 import { createElement as _$createElement } from "@opentui/solid";
 import { TextAttributes } from "@opentui/core";
 import { Show } from "solid-js";
+function truncateWithEllipsis(text, maxWidth) {
+  if (maxWidth <= 0)
+    return "";
+  if (text.length <= maxWidth)
+    return text;
+  return text.substring(0, Math.max(0, maxWidth - 1)) + "\u2026";
+}
 function itemIndexAtScreenY(el, screenY) {
   const internals = el;
   if (!internals.linesPerItem)
@@ -25,8 +32,19 @@ function itemIndexAtScreenY(el, screenY) {
   const index = internals.scrollOffset + Math.floor(localY / internals.linesPerItem);
   return index >= 0 && index < el.options.length ? index : null;
 }
+var BORDER_WIDTH = 2;
+var ITEM_LEFT_PADDING = 1;
+var ITEM_INDICATOR_WIDTH = 2;
 function Sidebar(props) {
   let select;
+  const contentWidth = () => Math.max(0, (props.width ?? 24) - BORDER_WIDTH);
+  const itemTextWidth = () => Math.max(0, contentWidth() - ITEM_LEFT_PADDING - ITEM_INDICATOR_WIDTH);
+  const displayTitle = () => props.title ? truncateWithEllipsis(props.title, contentWidth()) : props.title;
+  const displayItems = () => props.items.map((item) => ({
+    ...item,
+    name: truncateWithEllipsis(item.name, itemTextWidth()),
+    description: truncateWithEllipsis(item.description, itemTextWidth())
+  }));
   const handleMouseDown = (event) => {
     if (!select)
       return;
@@ -59,7 +77,7 @@ function Sidebar(props) {
       get children() {
         return [(() => {
           var _el$2 = _$createElement("text");
-          _$insert(_el$2, () => props.title);
+          _$insert(_el$2, displayTitle);
           _$effect((_$p) => _$setProp(_el$2, "attributes", TextAttributes.BOLD, _$p));
           return _el$2;
         })(), (() => {
@@ -91,7 +109,7 @@ function Sidebar(props) {
       props.onConfirm?.(option);
     });
     _$effect((_p$) => {
-      var _v$ = props.width ?? 24, _v$2 = theme.borderStyle, _v$3 = props.focused ? props.accentColor ?? theme.primary : props.mutedColor ?? theme.muted, _v$4 = props.focused, _v$5 = props.items, _v$6 = theme.mouse ? handleMouseDown : undefined, _v$7 = theme.mouse ? handleMouseScroll : undefined, _v$8 = props.backgroundColor ?? "transparent", _v$9 = props.textColor ?? presets.select.textColor, _v$0 = props.focusedBackgroundColor ?? "transparent", _v$1 = props.focusedTextColor ?? presets.select.focusedTextColor, _v$10 = props.selectedBackgroundColor ?? presets.select.selectedBackgroundColor, _v$11 = props.selectedTextColor ?? presets.select.selectedTextColor, _v$12 = props.descriptionColor ?? presets.select.descriptionColor, _v$13 = props.selectedDescriptionColor ?? presets.select.selectedDescriptionColor;
+      var _v$ = props.width ?? 24, _v$2 = theme.borderStyle, _v$3 = props.focused ? props.accentColor ?? theme.primary : props.mutedColor ?? theme.muted, _v$4 = props.focused, _v$5 = displayItems(), _v$6 = theme.mouse ? handleMouseDown : undefined, _v$7 = theme.mouse ? handleMouseScroll : undefined, _v$8 = props.backgroundColor ?? "transparent", _v$9 = props.textColor ?? presets.select.textColor, _v$0 = props.focusedBackgroundColor ?? "transparent", _v$1 = props.focusedTextColor ?? presets.select.focusedTextColor, _v$10 = props.selectedBackgroundColor ?? presets.select.selectedBackgroundColor, _v$11 = props.selectedTextColor ?? presets.select.selectedTextColor, _v$12 = props.descriptionColor ?? presets.select.descriptionColor, _v$13 = props.selectedDescriptionColor ?? presets.select.selectedDescriptionColor;
       _v$ !== _p$.e && (_p$.e = _$setProp(_el$, "width", _v$, _p$.e));
       _v$2 !== _p$.t && (_p$.t = _$setProp(_el$, "borderStyle", _v$2, _p$.t));
       _v$3 !== _p$.a && (_p$.a = _$setProp(_el$, "borderColor", _v$3, _p$.a));

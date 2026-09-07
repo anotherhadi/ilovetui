@@ -9,6 +9,12 @@ export interface SidebarHandle {
   focus(): void;
 }
 
+function truncateWithEllipsis(text: string, maxWidth: number): string {
+  if (maxWidth <= 0) return "";
+  if (text.length <= maxWidth) return text;
+  return text.substring(0, Math.max(0, maxWidth - 1)) + "…";
+}
+
 function itemIndexAtScreenY(el: SelectRenderable, screenY: number): number | null {
   const internals = el as unknown as { scrollOffset: number; linesPerItem: number };
   if (!internals.linesPerItem) return null;
@@ -40,8 +46,24 @@ export interface SidebarProps {
   selectedDescriptionColor?: ColorInput;
 }
 
+const BORDER_WIDTH = 2;
+const ITEM_LEFT_PADDING = 1;
+const ITEM_INDICATOR_WIDTH = 2;
+
 export function Sidebar(props: SidebarProps) {
   let select: SelectRenderable | undefined;
+
+  const contentWidth = () => Math.max(0, (props.width ?? 24) - BORDER_WIDTH);
+  const itemTextWidth = () => Math.max(0, contentWidth() - ITEM_LEFT_PADDING - ITEM_INDICATOR_WIDTH);
+
+  const displayTitle = () => (props.title ? truncateWithEllipsis(props.title, contentWidth()) : props.title);
+
+  const displayItems = () =>
+    props.items.map((item) => ({
+      ...item,
+      name: truncateWithEllipsis(item.name, itemTextWidth()),
+      description: truncateWithEllipsis(item.description, itemTextWidth()),
+    }));
 
   const handleMouseDown = (event: MouseEvent) => {
     if (!select) return;
@@ -70,7 +92,7 @@ export function Sidebar(props: SidebarProps) {
       flexDirection="column"
     >
       <Show when={props.title}>
-        <text attributes={TextAttributes.BOLD}>{props.title}</text>
+        <text attributes={TextAttributes.BOLD}>{displayTitle()}</text>
         <text> </text>
       </Show>
       <select
@@ -88,7 +110,7 @@ export function Sidebar(props: SidebarProps) {
         flexGrow={1}
         focused={props.focused}
         showScrollIndicator
-        options={props.items}
+        options={displayItems()}
         onMouseDown={theme.mouse ? handleMouseDown : undefined}
         onMouseScroll={theme.mouse ? handleMouseScroll : undefined}
         backgroundColor={props.backgroundColor ?? "transparent"}

@@ -1,7 +1,7 @@
 // @bun
 import {
   Sidebar
-} from "../chunk-kd78dgfb.js";
+} from "../chunk-15vweq1q.js";
 import"../chunk-x7m82z3z.js";
 import"../chunk-7f8jagy5.js";
 import"../chunk-hcq62p48.js";
