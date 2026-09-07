@@ -32,8 +32,10 @@ function Sidebar(props) {
       return;
     const index = itemIndexAtScreenY(select, event.y);
     if (index !== null) {
+      select.focus();
       select.setSelectedIndex(index);
       select.selectCurrent();
+      event.preventDefault();
     }
   };
   const handleMouseScroll = (event) => {

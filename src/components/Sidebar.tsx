@@ -47,8 +47,10 @@ export function Sidebar(props: SidebarProps) {
     if (!select) return;
     const index = itemIndexAtScreenY(select, event.y);
     if (index !== null) {
+      select.focus();
       select.setSelectedIndex(index);
       select.selectCurrent();
+      event.preventDefault();
     }
   };
 

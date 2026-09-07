@@ -1,7 +1,7 @@
 // @bun
 import {
   Sidebar
-} from "../chunk-89xtp8sa.js";
+} from "../chunk-kd78dgfb.js";
 import {
   NotificationHost
 } from "../chunk-b0h95a6q.js";
