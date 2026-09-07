@@ -2,7 +2,7 @@
 import {
   presets,
   theme
-} from "./chunk-9cbm4zqz.js";
+} from "./chunk-x7m82z3z.js";
 
 // src/components/Sidebar.tsx
 import { use as _$use } from "@opentui/solid";
@@ -31,8 +31,10 @@ function Sidebar(props) {
     if (!select)
       return;
     const index = itemIndexAtScreenY(select, event.y);
-    if (index !== null)
+    if (index !== null) {
       select.setSelectedIndex(index);
+      select.selectCurrent();
+    }
   };
   const handleMouseScroll = (event) => {
     if (!select || !event.scroll)

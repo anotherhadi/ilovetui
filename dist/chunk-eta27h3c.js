@@ -1,7 +1,7 @@
 // @bun
 import {
   theme
-} from "./chunk-9cbm4zqz.js";
+} from "./chunk-x7m82z3z.js";
 
 // src/components/MinSizeGuard.tsx
 import { createComponent as _$createComponent } from "@opentui/solid";

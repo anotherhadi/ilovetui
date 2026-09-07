@@ -1,7 +1,7 @@
 // @bun
 import {
   theme
-} from "./chunk-9cbm4zqz.js";
+} from "./chunk-x7m82z3z.js";
 
 // src/components/Modal.tsx
 import { insertNode as _$insertNode } from "@opentui/solid";
