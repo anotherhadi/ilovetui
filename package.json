@@ -12,7 +12,8 @@
     "./keymap": { "types": "./src/keymap/provider.tsx", "default": "./dist/keymap/provider.js" },
     "./components": { "types": "./src/components/index.ts", "default": "./dist/components/index.js" },
     "./components/spinner": { "types": "./src/components/Spinner.tsx", "default": "./dist/components/Spinner.js" },
-    "./components/help": { "types": "./src/components/help.ts", "default": "./dist/components/help.js" }
+    "./components/help": { "types": "./src/components/help.ts", "default": "./dist/components/help.js" },
+    "./components/section-header": { "types": "./src/components/SectionHeader.tsx", "default": "./dist/components/SectionHeader.js" }
   },
   "private": true,
   "files": ["dist", "src"],

@@ -1,11 +1,12 @@
 // @bun
 import {
-  Sidebar
-} from "../chunk-15vweq1q.js";
-import"../chunk-x7m82z3z.js";
-import"../chunk-7f8jagy5.js";
-import"../chunk-hcq62p48.js";
-import"../chunk-cnhhssmz.js";
+  Sidebar2
+} from "../chunk-rcywynbw.js";
+import"../chunk-p6jvscj3.js";
+import"../chunk-yyg967q8.js";
+import"../chunk-njvj322f.js";
+import"../chunk-6ggk5fg7.js";
+import"../chunk-xykm10y9.js";
 export {
-  Sidebar
+  Sidebar2 as Sidebar
 };

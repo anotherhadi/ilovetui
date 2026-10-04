@@ -1,7 +1,7 @@
 // @bun
 import {
-  theme
-} from "./chunk-x7m82z3z.js";
+  theme2
+} from "./chunk-p6jvscj3.js";
 
 // src/components/Badge.tsx
 import { insert as _$insert } from "@opentui/solid";
@@ -14,11 +14,11 @@ import { setProp as _$setProp } from "@opentui/solid";
 import { createElement as _$createElement } from "@opentui/solid";
 import { TextAttributes } from "@opentui/core";
 import { Show } from "solid-js";
-function Badge(props) {
-  const textColor = () => props.textColor ?? theme.background;
-  const backgroundColor = () => props.backgroundColor ?? theme.background;
+function Badge2(props) {
+  const textColor = () => props.textColor ?? theme2.background;
+  const backgroundColor = () => props.backgroundColor ?? theme2.background;
   const attributes = () => props.bold === false ? undefined : TextAttributes.BOLD;
-  const nerdFonts = () => props.withNerdfont ?? theme.nerdFonts;
+  const nerdFonts = () => props.withNerdfont ?? theme2.nerdFonts;
   return (() => {
     var _el$ = _$createElement("box"), _el$4 = _$createElement("text");
     _$insertNode(_el$, _el$4);
@@ -80,4 +80,4 @@ function Badge(props) {
   })();
 }
 
-export { Badge };
+export { Badge2 };

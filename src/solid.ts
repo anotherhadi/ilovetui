@@ -21,31 +21,35 @@ type AnyCtor = new (...args: any[]) => any;
 
 function withThemeDefaults<T extends AnyCtor>(
   Ctor: T,
-  defaults: object,
+  defaults: () => object,
   after?: (instance: any) => void,
 ): T {
   class Themed extends Ctor {
     constructor(...args: any[]) {
       super(...args);
-      Object.assign(this, defaults);
+      Object.assign(this, defaults());
       after?.(this);
     }
   }
   return Themed as T;
 }
 
-const { borderStyle, borderColor, focusedBorderColor } = presets.box;
-const boxDefaults = { borderStyle, borderColor, focusedBorderColor };
+// Defaults are read per instance (not captured at import) so that
+// configureTheme() overrides applied at startup are picked up.
+const boxDefaults = () => {
+  const { borderStyle, borderColor, focusedBorderColor } = presets.box;
+  return { borderStyle, borderColor, focusedBorderColor };
+};
 
 extend({
   box: withThemeDefaults(BoxRenderable, boxDefaults, (instance) => {
     instance.border = false;
   }),
-  select: withThemeDefaults(SelectRenderable, presets.select),
-  tab_select: withThemeDefaults(TabSelectRenderable, presets.tabSelect),
-  input: withThemeDefaults(InputRenderable, presets.input),
-  textarea: withThemeDefaults(TextareaRenderable, presets.textarea),
-  slider: withThemeDefaults(SliderRenderable, presets.slider),
-  text: withThemeDefaults(TextRenderable, { fg: theme.text }),
-  ascii_font: withThemeDefaults(ASCIIFontRenderable, { color: theme.primary }),
+  select: withThemeDefaults(SelectRenderable, () => presets.select),
+  tab_select: withThemeDefaults(TabSelectRenderable, () => presets.tabSelect),
+  input: withThemeDefaults(InputRenderable, () => presets.input),
+  textarea: withThemeDefaults(TextareaRenderable, () => presets.textarea),
+  slider: withThemeDefaults(SliderRenderable, () => presets.slider),
+  text: withThemeDefaults(TextRenderable, () => ({ fg: theme.text })),
+  ascii_font: withThemeDefaults(ASCIIFontRenderable, () => ({ color: theme.primary })),
 });

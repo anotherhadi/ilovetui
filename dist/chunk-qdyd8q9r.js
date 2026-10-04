@@ -1,7 +1,7 @@
 // @bun
 import {
-  theme
-} from "./chunk-x7m82z3z.js";
+  theme2
+} from "./chunk-p6jvscj3.js";
 
 // src/components/MinSizeGuard.tsx
 import { createComponent as _$createComponent } from "@opentui/solid";
@@ -13,7 +13,7 @@ import { createElement as _$createElement } from "@opentui/solid";
 import { memo as _$memo } from "@opentui/solid";
 import { useTerminalDimensions } from "@opentui/solid";
 import { Show } from "solid-js";
-function MinSizeGuard(props) {
+function MinSizeGuard2(props) {
   const dimensions = useTerminalDimensions();
   const minWidth = () => props.minWidth ?? 80;
   const minHeight = () => props.minHeight ?? 24;
@@ -34,7 +34,7 @@ function MinSizeGuard(props) {
       _$insert(_el$2, () => `Terminal too small
 Minimum size: ${minWidth()}x${minHeight()} \u2014 current: ${dimensions().width}x${dimensions().height}`);
       _$effect((_p$) => {
-        var _v$ = dimensions().width, _v$2 = dimensions().height, _v$3 = props.backgroundColor ?? theme.background, _v$4 = props.textColor ?? theme.muted;
+        var _v$ = dimensions().width, _v$2 = dimensions().height, _v$3 = props.backgroundColor ?? theme2.background, _v$4 = props.textColor ?? theme2.muted;
         _v$ !== _p$.e && (_p$.e = _$setProp(_el$, "width", _v$, _p$.e));
         _v$2 !== _p$.t && (_p$.t = _$setProp(_el$, "height", _v$2, _p$.t));
         _v$3 !== _p$.a && (_p$.a = _$setProp(_el$, "backgroundColor", _v$3, _p$.a));
@@ -51,4 +51,4 @@ Minimum size: ${minWidth()}x${minHeight()} \u2014 current: ${dimensions().width}
   })];
 }
 
-export { MinSizeGuard };
+export { MinSizeGuard2 };

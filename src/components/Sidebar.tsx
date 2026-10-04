@@ -1,5 +1,5 @@
 import { type ColorInput, type MouseEvent, type SelectOption, type SelectRenderable, TextAttributes } from "@opentui/core";
-import { Show } from "solid-js";
+import { createEffect, Show } from "solid-js";
 import { presets, theme } from "../index.ts";
 
 export interface SidebarHandle {
@@ -27,6 +27,8 @@ function itemIndexAtScreenY(el: SelectRenderable, screenY: number): number | nul
 export interface SidebarProps {
   title?: string;
   items: SelectOption[];
+  /** Value of the item to keep highlighted (e.g. the current route), if controlled. */
+  value?: string;
   width?: number;
   focused?: boolean;
   onSelect: (option: SelectOption) => void;
@@ -82,6 +84,12 @@ export function Sidebar(props: SidebarProps) {
     if (event.scroll.direction === "down") select.moveDown(steps);
     else if (event.scroll.direction === "up") select.moveUp(steps);
   };
+
+  // A user effect, so it runs after the `options` prop has been applied.
+  createEffect(() => {
+    const index = props.items.findIndex((item) => item.value === props.value);
+    if (select && index !== -1 && select.getSelectedIndex() !== index) select.setSelectedIndex(index);
+  });
 
   return (
     <box

@@ -1,7 +1,7 @@
 // @bun
 import {
-  theme
-} from "./chunk-x7m82z3z.js";
+  theme2
+} from "./chunk-p6jvscj3.js";
 
 // src/components/ProgressBar.tsx
 import { effect as _$effect } from "@opentui/solid";
@@ -23,9 +23,9 @@ function sampleGradient(stops, t) {
   const [br, bg, bb, ba] = parseColor(stops[i + 1]).toInts();
   return RGBA.fromInts(Math.round(ar + (br - ar) * localT), Math.round(ag + (bg - ag) * localT), Math.round(ab + (bb - ab) * localT), Math.round(aa + (ba - aa) * localT));
 }
-function ProgressBar(props) {
+function ProgressBar2(props) {
   const width = () => props.width ?? 20;
-  const stops = createMemo(() => Array.isArray(props.color) ? props.color : [props.color ?? theme.primary]);
+  const stops = createMemo(() => Array.isArray(props.color) ? props.color : [props.color ?? theme2.primary]);
   const filled = createMemo(() => Math.round(width() * Math.min(Math.max(props.value, 0), 100) / 100));
   const cells = createMemo(() => Array.from({
     length: width()
@@ -46,7 +46,7 @@ function ProgressBar(props) {
             var _c$ = _$memo(() => !!isFilled());
             return () => _c$() ? props.fillChar ?? "\u2588" : props.trackChar ?? "\u2591";
           })());
-          _$effect((_$p) => _$setProp(_el$2, "fg", isFilled() ? sampleGradient(stops(), t) : props.trackColor ?? theme.muted, _$p));
+          _$effect((_$p) => _$setProp(_el$2, "fg", isFilled() ? sampleGradient(stops(), t) : props.trackColor ?? theme2.muted, _$p));
           return _el$2;
         })();
       }
@@ -55,4 +55,4 @@ function ProgressBar(props) {
   })();
 }
 
-export { ProgressBar };
+export { ProgressBar2 };

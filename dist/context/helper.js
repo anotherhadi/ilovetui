@@ -1,7 +1,7 @@
 // @bun
 import {
-  createSimpleContext
-} from "../chunk-2px9e43p.js";
+  createSimpleContext2
+} from "../chunk-jza406qg.js";
 export {
-  createSimpleContext
+  createSimpleContext2 as createSimpleContext
 };

@@ -1,10 +1,10 @@
 // @bun
 import {
-  Badge
-} from "./chunk-bscbaa87.js";
+  theme2
+} from "./chunk-p6jvscj3.js";
 import {
-  theme
-} from "./chunk-x7m82z3z.js";
+  Badge2
+} from "./chunk-v9cetqzr.js";
 
 // src/components/Toggle.tsx
 import { setProp as _$setProp } from "@opentui/solid";
@@ -15,10 +15,10 @@ import { memo as _$memo } from "@opentui/solid";
 import { createElement as _$createElement } from "@opentui/solid";
 import { TextAttributes } from "@opentui/core";
 import { Show } from "solid-js";
-function Toggle(props) {
-  const onColor = () => props.onColor ?? theme.success;
-  const offColor = () => props.offColor ?? theme.muted;
-  const nerdFonts = () => props.withNerdfont ?? theme.nerdFonts;
+function Toggle2(props) {
+  const onColor = () => props.onColor ?? theme2.success;
+  const offColor = () => props.offColor ?? theme2.muted;
+  const nerdFonts = () => props.withNerdfont ?? theme2.nerdFonts;
   return (() => {
     var _el$ = _$createElement("box");
     _$insert(_el$, _$createComponent(Show, {
@@ -42,7 +42,7 @@ function Toggle(props) {
         })();
       },
       get children() {
-        return _$createComponent(Badge, {
+        return _$createComponent(Badge2, {
           get label() {
             return props.on ? "  \u25CF" : "\u25CF  ";
           },
@@ -53,9 +53,9 @@ function Toggle(props) {
         });
       }
     }));
-    _$effect((_$p) => _$setProp(_el$, "onMouseDown", theme.mouse ? props.onToggle : undefined, _$p));
+    _$effect((_$p) => _$setProp(_el$, "onMouseDown", theme2.mouse ? props.onToggle : undefined, _$p));
     return _el$;
   })();
 }
 
-export { Toggle };
+export { Toggle2 };

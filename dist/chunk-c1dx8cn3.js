@@ -1,7 +1,7 @@
 // @bun
 import {
-  theme
-} from "./chunk-x7m82z3z.js";
+  theme2
+} from "./chunk-p6jvscj3.js";
 
 // src/components/HelpBar.tsx
 import { createTextNode as _$createTextNode } from "@opentui/solid";
@@ -28,9 +28,9 @@ var KEY_DISPLAY = {
 };
 var SEPARATOR = "   ";
 var ELLIPSIS = "\u2026";
-function HelpBar(props = {}) {
-  const accent = () => props.accentColor ?? theme.primary;
-  const muted = () => props.mutedColor ?? theme.muted;
+function HelpBar2(props = {}) {
+  const accent = () => props.accentColor ?? theme2.primary;
+  const muted = () => props.mutedColor ?? theme2.muted;
   const renderer = useRenderer();
   const [width, setWidth] = createSignal(0);
   let container;
@@ -118,4 +118,4 @@ function HelpBar(props = {}) {
   })();
 }
 
-export { HelpBar };
+export { HelpBar2 };

@@ -1,7 +1,7 @@
 // @bun
 import {
-  notify
-} from "./chunk-y6txxzxk.js";
+  notify2
+} from "./chunk-6ggk5fg7.js";
 
 // src/project-config.ts
 import { existsSync, readFileSync } from "fs";
@@ -19,7 +19,7 @@ function readYaml(path) {
 function warn(projectName, path, message) {
   const text = `${path}: ${message}`;
   console.error(`[${projectName} config] ${text}`);
-  notify(text, { kind: "warning", duration: 0 });
+  notify2(text, { kind: "warning", duration: 0 });
 }
 function loadProjectConfig(options) {
   const { projectName, defaultConfigPath, defaultSchema, userSchema } = options;
@@ -54,6 +54,47 @@ ${z.prettifyError(defaultsResult.error)}`);
   })();
   return { defaults: defaultsResult.data, user };
 }
+function isPlainObject(value) {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+function deepMerge(base, over) {
+  if (!isPlainObject(base) || !isPlainObject(over))
+    return over === undefined ? base : over;
+  const out = { ...base };
+  for (const [key, value] of Object.entries(over))
+    out[key] = deepMerge(base[key], value);
+  return out;
+}
+function loadMergedProjectConfig(options) {
+  const { projectName, defaultConfigPath, schema } = options;
+  let rawDefaults;
+  try {
+    rawDefaults = readYaml(defaultConfigPath);
+  } catch (error) {
+    throw new Error(`Failed to read ${defaultConfigPath}: ${error instanceof Error ? error.message : error}`);
+  }
+  const defaults = schema.safeParse(rawDefaults);
+  if (!defaults.success) {
+    throw new Error(`${defaultConfigPath} is invalid:
+${z.prettifyError(defaults.error)}`);
+  }
+  const path = userConfigPath(projectName);
+  if (!existsSync(path))
+    return defaults.data;
+  let rawUser;
+  try {
+    rawUser = readYaml(path);
+  } catch (error) {
+    warn(projectName, path, error instanceof Error ? error.message : String(error));
+    return defaults.data;
+  }
+  const merged = schema.safeParse(deepMerge(rawDefaults, rawUser ?? {}));
+  if (!merged.success) {
+    warn(projectName, path, z.prettifyError(merged.error));
+    return defaults.data;
+  }
+  return merged.data;
+}
 function keybindsSchema(names, required) {
   const shape = {};
   for (const name of names) {
@@ -69,7 +110,8 @@ function mergeKeybinds(names, defaults, user) {
   return merged;
 }
 export {
-  mergeKeybinds,
+  keybindsSchema,
+  loadMergedProjectConfig,
   loadProjectConfig,
-  keybindsSchema
+  mergeKeybinds
 };

@@ -71,6 +71,66 @@ export function loadProjectConfig<TDefault, TUser>(
   return { defaults: defaultsResult.data, user };
 }
 
+export interface MergedProjectConfigOptions<T> {
+  projectName: string;
+  defaultConfigPath: string;
+  /** Schema for the complete config; the defaults file must satisfy it on its own. */
+  schema: z.ZodType<T>;
+}
+
+function isPlainObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+// Objects merge key by key; anything else (scalars, arrays) from `over` replaces `base`.
+function deepMerge(base: unknown, over: unknown): unknown {
+  if (!isPlainObject(base) || !isPlainObject(over)) return over === undefined ? base : over;
+  const out: Record<string, unknown> = { ...base };
+  for (const [key, value] of Object.entries(over)) out[key] = deepMerge(base[key], value);
+  return out;
+}
+
+/**
+ * Single-schema alternative to loadProjectConfig(): the user's
+ * ~/.config/<projectName>/config.yaml is deep-merged over the defaults file
+ * and the result is validated once against `schema`, so the returned value is
+ * fully typed and complete — no per-field `user.x ?? defaults.x` merging.
+ * An unreadable or invalid user file is reported (warning toast + stderr) and
+ * ignored as a whole; an invalid defaults file throws.
+ */
+export function loadMergedProjectConfig<T>(options: MergedProjectConfigOptions<T>): T {
+  const { projectName, defaultConfigPath, schema } = options;
+
+  let rawDefaults: unknown;
+  try {
+    rawDefaults = readYaml(defaultConfigPath);
+  } catch (error) {
+    throw new Error(`Failed to read ${defaultConfigPath}: ${error instanceof Error ? error.message : error}`);
+  }
+  const defaults = schema.safeParse(rawDefaults);
+  if (!defaults.success) {
+    throw new Error(`${defaultConfigPath} is invalid:\n${z.prettifyError(defaults.error)}`);
+  }
+
+  const path = userConfigPath(projectName);
+  if (!existsSync(path)) return defaults.data;
+
+  let rawUser: unknown;
+  try {
+    rawUser = readYaml(path);
+  } catch (error) {
+    warn(projectName, path, error instanceof Error ? error.message : String(error));
+    return defaults.data;
+  }
+
+  const merged = schema.safeParse(deepMerge(rawDefaults, rawUser ?? {}));
+  if (!merged.success) {
+    warn(projectName, path, z.prettifyError(merged.error));
+    return defaults.data;
+  }
+  return merged.data;
+}
+
 export function keybindsSchema<TName extends string>(
   names: readonly TName[],
   required: true,

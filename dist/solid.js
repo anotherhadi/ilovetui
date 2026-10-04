@@ -1,11 +1,12 @@
 // @bun
+import"./chunk-njvj322f.js";
+import"./chunk-6ggk5fg7.js";
+import"./chunk-yyg967q8.js";
+import"./chunk-xykm10y9.js";
 import {
-  presets,
-  theme
-} from "./chunk-x7m82z3z.js";
-import"./chunk-7f8jagy5.js";
-import"./chunk-hcq62p48.js";
-import"./chunk-cnhhssmz.js";
+  theme2,
+  presets2
+} from "./chunk-p6jvscj3.js";
 
 // src/solid.ts
 import { extend } from "@opentui/solid";
@@ -23,23 +24,25 @@ function withThemeDefaults(Ctor, defaults, after) {
   class Themed extends Ctor {
     constructor(...args) {
       super(...args);
-      Object.assign(this, defaults);
+      Object.assign(this, defaults());
       after?.(this);
     }
   }
   return Themed;
 }
-var { borderStyle, borderColor, focusedBorderColor } = presets.box;
-var boxDefaults = { borderStyle, borderColor, focusedBorderColor };
+var boxDefaults = () => {
+  const { borderStyle, borderColor, focusedBorderColor } = presets2.box;
+  return { borderStyle, borderColor, focusedBorderColor };
+};
 extend({
   box: withThemeDefaults(BoxRenderable, boxDefaults, (instance) => {
     instance.border = false;
   }),
-  select: withThemeDefaults(SelectRenderable, presets.select),
-  tab_select: withThemeDefaults(TabSelectRenderable, presets.tabSelect),
-  input: withThemeDefaults(InputRenderable, presets.input),
-  textarea: withThemeDefaults(TextareaRenderable, presets.textarea),
-  slider: withThemeDefaults(SliderRenderable, presets.slider),
-  text: withThemeDefaults(TextRenderable, { fg: theme.text }),
-  ascii_font: withThemeDefaults(ASCIIFontRenderable, { color: theme.primary })
+  select: withThemeDefaults(SelectRenderable, () => presets2.select),
+  tab_select: withThemeDefaults(TabSelectRenderable, () => presets2.tabSelect),
+  input: withThemeDefaults(InputRenderable, () => presets2.input),
+  textarea: withThemeDefaults(TextareaRenderable, () => presets2.textarea),
+  slider: withThemeDefaults(SliderRenderable, () => presets2.slider),
+  text: withThemeDefaults(TextRenderable, () => ({ fg: theme2.text })),
+  ascii_font: withThemeDefaults(ASCIIFontRenderable, () => ({ color: theme2.primary }))
 });

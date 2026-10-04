@@ -1,11 +1,11 @@
 // @bun
 import {
-  Modal
-} from "./chunk-zjfxbvmq.js";
+  helpOpen2,
+  toggleHelp2
+} from "./chunk-ee2qaswx.js";
 import {
-  helpOpen,
-  toggleHelp
-} from "./chunk-cyvpvpws.js";
+  Modal2
+} from "./chunk-t2cszvff.js";
 
 // src/components/HelpModal.tsx
 import { createComponent as _$createComponent } from "@opentui/solid";
@@ -18,6 +18,7 @@ import { createElement as _$createElement } from "@opentui/solid";
 import { TextAttributes } from "@opentui/core";
 import { formatCommandBindings } from "@opentui/keymap/extras";
 import { useKeymapSelector } from "@opentui/keymap/solid";
+import { createSignal } from "solid-js";
 var KEY_DISPLAY = {
   up: "\u2191",
   down: "\u2193",
@@ -26,9 +27,11 @@ var KEY_DISPLAY = {
   enter: "Enter",
   escape: "Esc"
 };
-function HelpModal(props = {}) {
+function HelpModal2(props = {}) {
+  const [scope, setScope] = createSignal(null);
   const entries = useKeymapSelector((keymap) => keymap.getCommandEntries({
-    visibility: "active"
+    visibility: "active",
+    focused: scope()
   }).map((entry) => ({
     command: entry.command.name,
     keys: formatCommandBindings(entry.bindings, {
@@ -36,11 +39,15 @@ function HelpModal(props = {}) {
     }) ?? "",
     label: typeof entry.command.desc === "string" ? entry.command.desc : entry.command.name
   })));
-  return _$createComponent(Modal, {
+  return _$createComponent(Modal2, {
     get open() {
-      return helpOpen();
+      return helpOpen2();
     },
-    onDismiss: toggleHelp,
+    onDismiss: toggleHelp2,
+    onOpen: (previous) => setScope(() => previous),
+    get dismissKey() {
+      return props.dismissKey;
+    },
     get accentColor() {
       return props.accentColor;
     },
@@ -77,4 +84,4 @@ function HelpModal(props = {}) {
   });
 }
 
-export { HelpModal };
+export { HelpModal2 };

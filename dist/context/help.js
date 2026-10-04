@@ -1,9 +1,9 @@
 // @bun
 import {
-  helpOpen,
-  toggleHelp
-} from "../chunk-cyvpvpws.js";
+  helpOpen2,
+  toggleHelp2
+} from "../chunk-ee2qaswx.js";
 export {
-  toggleHelp,
-  helpOpen
+  helpOpen2 as helpOpen,
+  toggleHelp2 as toggleHelp
 };

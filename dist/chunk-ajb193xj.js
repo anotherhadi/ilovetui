@@ -1,11 +1,11 @@
 // @bun
 import {
-  theme
-} from "./chunk-x7m82z3z.js";
+  notifications2,
+  dismiss2
+} from "./chunk-6ggk5fg7.js";
 import {
-  dismiss,
-  notifications
-} from "./chunk-y6txxzxk.js";
+  theme2
+} from "./chunk-p6jvscj3.js";
 
 // src/components/NotificationHost.tsx
 import { effect as _$effect } from "@opentui/solid";
@@ -23,12 +23,12 @@ var KIND_LABEL = {
   warning: "Warning",
   error: "Error"
 };
-function NotificationHost(props = {}) {
+function NotificationHost2(props = {}) {
   const defaultColor = () => ({
-    info: theme.primary,
-    success: theme.success,
-    warning: theme.warning,
-    error: theme.error
+    info: theme2.primary,
+    success: theme2.success,
+    warning: theme2.warning,
+    error: theme2.error
   });
   const colorFor = (kind) => props.colors?.[kind] ?? defaultColor()[kind];
   return _$createComponent(Portal, {
@@ -41,7 +41,7 @@ function NotificationHost(props = {}) {
       _$setProp(_el$, "zIndex", 1000);
       _$insert(_el$, _$createComponent(For, {
         get each() {
-          return notifications();
+          return notifications2();
         },
         children: (toast) => (() => {
           var _el$2 = _$createElement("box"), _el$3 = _$createElement("text"), _el$4 = _$createElement("text");
@@ -52,7 +52,7 @@ function NotificationHost(props = {}) {
           _$insert(_el$3, () => toast.title ?? KIND_LABEL[toast.kind]);
           _$insert(_el$4, () => toast.message);
           _$effect((_p$) => {
-            var _v$ = theme.borderStyle, _v$2 = colorFor(toast.kind), _v$3 = props.backgroundColor ?? theme.background, _v$4 = props.width ?? 32, _v$5 = theme.mouse ? () => dismiss(toast.id) : undefined, _v$6 = colorFor(toast.kind);
+            var _v$ = theme2.borderStyle, _v$2 = colorFor(toast.kind), _v$3 = props.backgroundColor ?? theme2.background, _v$4 = props.width ?? 32, _v$5 = theme2.mouse ? () => dismiss2(toast.id) : undefined, _v$6 = colorFor(toast.kind);
             _v$ !== _p$.e && (_p$.e = _$setProp(_el$2, "borderStyle", _v$, _p$.e));
             _v$2 !== _p$.t && (_p$.t = _$setProp(_el$2, "borderColor", _v$2, _p$.t));
             _v$3 !== _p$.a && (_p$.a = _$setProp(_el$2, "backgroundColor", _v$3, _p$.a));
@@ -76,4 +76,4 @@ function NotificationHost(props = {}) {
   });
 }
 
-export { NotificationHost };
+export { NotificationHost2 };

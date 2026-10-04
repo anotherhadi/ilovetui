@@ -1,6 +1,6 @@
 // @bun
 // src/presets.ts
-function buildPresets(theme) {
+function buildPresets2(theme) {
   const select = {
     backgroundColor: theme.background,
     textColor: theme.text,
@@ -41,4 +41,4 @@ function buildPresets(theme) {
   return { select, tabSelect, input, textarea: input, box, slider };
 }
 
-export { buildPresets };
+export { buildPresets2 };

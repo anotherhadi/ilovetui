@@ -1,7 +1,7 @@
 // @bun
 import {
-  theme
-} from "./chunk-x7m82z3z.js";
+  theme2
+} from "./chunk-p6jvscj3.js";
 
 // src/components/Tabs.tsx
 import { effect as _$effect } from "@opentui/solid";
@@ -14,7 +14,7 @@ import { createElement as _$createElement } from "@opentui/solid";
 import { BorderChars, CliRenderEvents, TextAttributes } from "@opentui/core";
 import { onResize, useRenderer } from "@opentui/solid";
 import { createMemo, createSignal, Index } from "solid-js";
-function stepTabValue(items, value, delta) {
+function stepTabValue2(items, value, delta) {
   const index = items.findIndex((t) => t.value === value);
   if (index === -1)
     return value;
@@ -58,7 +58,7 @@ function fitCount(items, start, available) {
   }
   return Math.max(count, 1);
 }
-function Tabs(props) {
+function Tabs2(props) {
   const renderer = useRenderer();
   const [width, setWidth] = createSignal(0);
   let container;
@@ -98,10 +98,10 @@ function Tabs(props) {
     }
     return shown;
   });
-  const accent = () => props.accentColor ?? theme.primary;
-  const muted = () => props.mutedColor ?? theme.muted;
+  const accent = () => props.accentColor ?? theme2.primary;
+  const muted = () => props.mutedColor ?? theme2.muted;
   const borderColor = () => props.focused ? accent() : muted();
-  const chars = BorderChars[theme.borderStyle];
+  const chars = BorderChars[theme2.borderStyle];
   return (() => {
     var _el$ = _$createElement("box"), _el$2 = _$createElement("text"), _el$3 = _$createElement("box"), _el$4 = _$createElement("text");
     _$insertNode(_el$, _el$2);
@@ -131,7 +131,7 @@ function Tabs(props) {
         _$setProp(_el$6, "selectable", false);
         _$insert(_el$6, () => ` ${s().label} `);
         _$effect((_p$) => {
-          var _v$3 = s().isActive ? accent() : muted(), _v$4 = s().isActive ? TextAttributes.BOLD : undefined, _v$5 = theme.mouse && s().value !== undefined ? () => props.onChange(s().value) : undefined;
+          var _v$3 = s().isActive ? accent() : muted(), _v$4 = s().isActive ? TextAttributes.BOLD : undefined, _v$5 = theme2.mouse && s().value !== undefined ? () => props.onChange(s().value) : undefined;
           _v$3 !== _p$.e && (_p$.e = _$setProp(_el$6, "fg", _v$3, _p$.e));
           _v$4 !== _p$.t && (_p$.t = _$setProp(_el$6, "attributes", _v$4, _p$.t));
           _v$5 !== _p$.a && (_p$.a = _$setProp(_el$6, "onMouseDown", _v$5, _p$.a));
@@ -165,4 +165,4 @@ function Tabs(props) {
   })();
 }
 
-export { stepTabValue, Tabs };
+export { stepTabValue2, Tabs2 };

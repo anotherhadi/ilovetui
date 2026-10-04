@@ -1,8 +1,8 @@
 // @bun
 import {
-  presets,
-  theme
-} from "./chunk-x7m82z3z.js";
+  theme2,
+  presets2
+} from "./chunk-p6jvscj3.js";
 
 // src/components/Sidebar.tsx
 import { use as _$use } from "@opentui/solid";
@@ -14,7 +14,7 @@ import { insert as _$insert } from "@opentui/solid";
 import { setProp as _$setProp } from "@opentui/solid";
 import { createElement as _$createElement } from "@opentui/solid";
 import { TextAttributes } from "@opentui/core";
-import { Show } from "solid-js";
+import { createEffect, Show } from "solid-js";
 function truncateWithEllipsis(text, maxWidth) {
   if (maxWidth <= 0)
     return "";
@@ -35,7 +35,7 @@ function itemIndexAtScreenY(el, screenY) {
 var BORDER_WIDTH = 2;
 var ITEM_LEFT_PADDING = 1;
 var ITEM_INDICATOR_WIDTH = 2;
-function Sidebar(props) {
+function Sidebar2(props) {
   let select;
   const contentWidth = () => Math.max(0, (props.width ?? 24) - BORDER_WIDTH);
   const itemTextWidth = () => Math.max(0, contentWidth() - ITEM_LEFT_PADDING - ITEM_INDICATOR_WIDTH);
@@ -65,6 +65,11 @@ function Sidebar(props) {
     else if (event.scroll.direction === "up")
       select.moveUp(steps);
   };
+  createEffect(() => {
+    const index = props.items.findIndex((item) => item.value === props.value);
+    if (select && index !== -1 && select.getSelectedIndex() !== index)
+      select.setSelectedIndex(index);
+  });
   return (() => {
     var _el$ = _$createElement("box"), _el$5 = _$createElement("select");
     _$insertNode(_el$, _el$5);
@@ -109,7 +114,7 @@ function Sidebar(props) {
       props.onConfirm?.(option);
     });
     _$effect((_p$) => {
-      var _v$ = props.width ?? 24, _v$2 = theme.borderStyle, _v$3 = props.focused ? props.accentColor ?? theme.primary : props.mutedColor ?? theme.muted, _v$4 = props.focused, _v$5 = displayItems(), _v$6 = theme.mouse ? handleMouseDown : undefined, _v$7 = theme.mouse ? handleMouseScroll : undefined, _v$8 = props.backgroundColor ?? "transparent", _v$9 = props.textColor ?? presets.select.textColor, _v$0 = props.focusedBackgroundColor ?? "transparent", _v$1 = props.focusedTextColor ?? presets.select.focusedTextColor, _v$10 = props.selectedBackgroundColor ?? presets.select.selectedBackgroundColor, _v$11 = props.selectedTextColor ?? presets.select.selectedTextColor, _v$12 = props.descriptionColor ?? presets.select.descriptionColor, _v$13 = props.selectedDescriptionColor ?? presets.select.selectedDescriptionColor;
+      var _v$ = props.width ?? 24, _v$2 = theme2.borderStyle, _v$3 = props.focused ? props.accentColor ?? theme2.primary : props.mutedColor ?? theme2.muted, _v$4 = props.focused, _v$5 = displayItems(), _v$6 = theme2.mouse ? handleMouseDown : undefined, _v$7 = theme2.mouse ? handleMouseScroll : undefined, _v$8 = props.backgroundColor ?? "transparent", _v$9 = props.textColor ?? presets2.select.textColor, _v$0 = props.focusedBackgroundColor ?? "transparent", _v$1 = props.focusedTextColor ?? presets2.select.focusedTextColor, _v$10 = props.selectedBackgroundColor ?? presets2.select.selectedBackgroundColor, _v$11 = props.selectedTextColor ?? presets2.select.selectedTextColor, _v$12 = props.descriptionColor ?? presets2.select.descriptionColor, _v$13 = props.selectedDescriptionColor ?? presets2.select.selectedDescriptionColor;
       _v$ !== _p$.e && (_p$.e = _$setProp(_el$, "width", _v$, _p$.e));
       _v$2 !== _p$.t && (_p$.t = _$setProp(_el$, "borderStyle", _v$2, _p$.t));
       _v$3 !== _p$.a && (_p$.a = _$setProp(_el$, "borderColor", _v$3, _p$.a));
@@ -147,4 +152,4 @@ function Sidebar(props) {
   })();
 }
 
-export { Sidebar };
+export { Sidebar2 };

@@ -2,7 +2,7 @@
 // src/context/helper.tsx
 import { createComponent as _$createComponent } from "@opentui/solid";
 import { createContext, useContext } from "solid-js";
-function createSimpleContext(input) {
+function createSimpleContext2(input) {
   const ctx = createContext();
   return {
     provider: (props) => {
@@ -23,4 +23,4 @@ function createSimpleContext(input) {
   };
 }
 
-export { createSimpleContext };
+export { createSimpleContext2 };

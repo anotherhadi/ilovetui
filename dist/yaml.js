@@ -1,9 +1,7 @@
 // @bun
 import {
-  configPath,
-  readYamlFile
-} from "./chunk-7f8jagy5.js";
+  configPath2
+} from "./chunk-xykm10y9.js";
 export {
-  readYamlFile,
-  configPath
+  configPath2 as configPath
 };

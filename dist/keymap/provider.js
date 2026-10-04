@@ -19,9 +19,9 @@ function KeymapProvider(props) {
   });
 }
 export {
-  useKeymapSelector,
-  useKeymap,
-  useBindings,
+  KeymapProvider,
   reactiveMatcherFromSignal,
-  KeymapProvider
+  useBindings,
+  useKeymap,
+  useKeymapSelector
 };

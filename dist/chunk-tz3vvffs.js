@@ -1,7 +1,7 @@
 // @bun
 import {
-  theme
-} from "./chunk-x7m82z3z.js";
+  theme2
+} from "./chunk-p6jvscj3.js";
 
 // src/components/SignalBars.tsx
 import { effect as _$effect } from "@opentui/solid";
@@ -11,7 +11,7 @@ import { setProp as _$setProp } from "@opentui/solid";
 import { createElement as _$createElement } from "@opentui/solid";
 import { For } from "solid-js";
 var BARS = ["\u2581", "\u2583", "\u2585", "\u2587"];
-function SignalBars(props) {
+function SignalBars2(props) {
   const level = () => Math.floor(props.signal * BARS.length / 100);
   return (() => {
     var _el$ = _$createElement("box");
@@ -21,7 +21,7 @@ function SignalBars(props) {
       children: (bar, i) => (() => {
         var _el$2 = _$createElement("text");
         _$insert(_el$2, bar);
-        _$effect((_$p) => _$setProp(_el$2, "fg", i() < level() ? props.filledColor : props.emptyColor ?? theme.muted, _$p));
+        _$effect((_$p) => _$setProp(_el$2, "fg", i() < level() ? props.filledColor : props.emptyColor ?? theme2.muted, _$p));
         return _el$2;
       })()
     }));
@@ -29,4 +29,4 @@ function SignalBars(props) {
   })();
 }
 
-export { SignalBars };
+export { SignalBars2 };
